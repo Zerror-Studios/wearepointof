@@ -38,7 +38,7 @@ const FullscreenMenu = React.forwardRef(function FullscreenMenu(
       className="fixed inset-0 z-40 bg-secondary text-background overflow-hidden flex items-stretch"
       style={{ clipPath: "polygon(0% 0%, 100% 0%, 100% 0%, 0 0%)" }}
     >
-      <div className="w-full flex flex-col h-dvh px-6 sm:px-10 md:px-12 lg:px-14 xl:px-20 pt-24 pb-10 md:py-24 overflow-y-auto overscroll-contain">
+      <div className="w-full flex flex-col h-dvh px-6 sm:px-10 md:px-12 lg:px-14 xl:px-20 pt-24 pb-16 md:pt-24 md:pb-28 lg:py-24 overflow-y-auto overscroll-contain">
         {/* TOP — links stay top; email at bottom through iPad Pro, beside from xl */}
         <div className="flex flex-1 min-h-0 mb-10 md:mb-16 flex-col">
           <div className="flex flex-1 xl:flex-none flex-col items-start gap-8 xl:flex-row xl:items-end xl:justify-between xl:gap-12">
@@ -100,7 +100,7 @@ const FullscreenMenu = React.forwardRef(function FullscreenMenu(
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setMenuOpen(false)}
-                className="link-underline text-xs sm:text-sm text-background opacity-100 hover:text-background cursor-pointer transition-colors duration-200"
+                className="link-underline text-base md:text-lg lg:text-sm text-background opacity-100 hover:text-background cursor-pointer transition-colors duration-200"
                 title={item.name}
               >
                 {item.name}

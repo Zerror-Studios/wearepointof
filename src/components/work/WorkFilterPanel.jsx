@@ -37,10 +37,10 @@ export default function WorkFilterPanel({
 
           <div className="flex-1 overflow-y-auto overscroll-contain pr-1 pb-28 md:pb-0">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-10 md:gap-16">
-              <div className="text-heading text-sm tracking-wide">Filter by:</div>
+              <div className="text-heading text-sm md:text-lg tracking-wide">Filter by:</div>
 
               <div>
-                <div className="text-desc text-xs tracking-wide mb-4">Services</div>
+                <div className="text-desc text-xs md:text-base tracking-wide mb-4">Services</div>
                 <ul className="filter-ul space-y-2 text-sm text-heading">
                   {filterOptions.services.map((label) => (
                     <li
@@ -62,7 +62,7 @@ export default function WorkFilterPanel({
               </div>
 
               <div>
-                <div className="text-desc text-xs tracking-wide mb-4">Industry</div>
+                <div className="text-desc text-xs md:text-base tracking-wide mb-4">Industry</div>
                 <ul className="filter-ul space-y-2 text-sm text-heading">
                   {filterOptions.industry.map((label) => (
                     <li

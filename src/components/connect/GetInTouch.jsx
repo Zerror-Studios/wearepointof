@@ -9,6 +9,20 @@ import { Controller, useForm } from "react-hook-form";
 
 import { isValidEmail } from "@/helper/validateEmail";
 
+const BRAND_DECK_FILENAME = "Point-Of-Studio-Brand-Deck.pdf";
+// Hosted on Sanity CDN (too large for git). `dl` sets the download filename,
+// since the `download` attribute is ignored for cross-origin links.
+const BRAND_DECK_HREF = `https://cdn.sanity.io/files/aksv9uid/production/1330bea3a4add5c27b6a31e47b75cbfff907c14d.pdf?dl=${encodeURIComponent(BRAND_DECK_FILENAME)}`;
+
+const downloadBrandDeck = () => {
+  const a = document.createElement("a");
+  a.href = BRAND_DECK_HREF;
+  a.download = BRAND_DECK_FILENAME;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+};
+
 const isValidWebsite = (value) => {
   const raw = String(value ?? "").trim();
   if (!raw) return true;
@@ -523,12 +537,20 @@ const GetInTouch = () => {
               onClick={handleSubmit(onValidSubmit, onError)}
             />
             {submitted ? (
-              <p
+              <div
                 role="status"
-                className="mt-5 max-w-lg text-sm sm:text-base text-green-600 leading-relaxed opacity-0 animate-[fadeSlideIn_0.5s_ease-out_forwards]"
+                className="mt-5 max-w-lg opacity-0 animate-[fadeSlideIn_0.5s_ease-out_forwards]"
               >
-                Thank you! We have received your inquiry, will be in touch soon.
-              </p>
+                <p className="text-sm sm:text-base text-green-600 leading-relaxed">
+                  Thank you! We have received your inquiry, will be in touch soon.
+                </p>
+                <Button
+                  title="Download studio brand deck"
+                  color="black"
+                  onClick={downloadBrandDeck}
+                  className="mt-5! md:mt-5!"
+                />
+              </div>
             ) : null}
             <p className="text-xs sm:text-sm text-gray-600 mt-3 sm:mt-4 md:mt-6">
               By clicking connect you accept our{" "}

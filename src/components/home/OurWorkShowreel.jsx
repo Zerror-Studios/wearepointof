@@ -147,8 +147,33 @@ export default function OurWorkShowreel({ posts = [] }) {
       // Overlay starts below viewport
       gsap.set(overlay, { top: "100%" });
 
+      // ── Navbar gradient: hide just before the dot scales, bring back once
+      //    this section has scrolled away and partnerships reaches the top ──
+      let tl;
+      let sectionEnd;
+      let gradientHidden = false;
+      const syncNavGradient = () => {
+        if (!tl || !sectionEnd || tl.labels.hide === undefined) return;
+        const hidden = tl.time() >= tl.labels.hide && sectionEnd.progress < 1;
+        if (hidden === gradientHidden) return;
+        gradientHidden = hidden;
+        window.dispatchEvent(
+          new CustomEvent("nav-gradient:suppress", { detail: { suppressed: hidden } })
+        );
+      };
+
+      sectionEnd = ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: "top top",
+        end: "bottom top",
+        onUpdate: syncNavGradient,
+        onLeave: syncNavGradient,
+        onEnterBack: syncNavGradient,
+      });
+
       // ── Master timeline (scrub against whole wrapper section) ──
-      const tl = gsap.timeline({
+      tl = gsap.timeline({
+        onUpdate: syncNavGradient,
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
@@ -260,6 +285,12 @@ export default function OurWorkShowreel({ posts = [] }) {
       return () => {
         tl.scrollTrigger?.kill();
         tl.kill();
+        sectionEnd.kill();
+        if (gradientHidden) {
+          window.dispatchEvent(
+            new CustomEvent("nav-gradient:suppress", { detail: { suppressed: false } })
+          );
+        }
       };
     }, sectionRef);
 

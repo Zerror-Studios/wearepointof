@@ -98,7 +98,23 @@ const AboutStudio = () => {
         });
       };
 
-      gsap.timeline({
+      // Hide the navbar gradient from when the circle starts fading in
+      // until the About section stops being sticky (pin ends).
+      let fadeTl;
+      let pinTl;
+      let gradientHidden = false;
+      const syncNavGradient = () => {
+        if (!fadeTl || !pinTl) return;
+        const hidden = fadeTl.progress() > 0 && pinTl.scrollTrigger.progress < 1;
+        if (hidden === gradientHidden) return;
+        gradientHidden = hidden;
+        window.dispatchEvent(
+          new CustomEvent("nav-gradient:suppress", { detail: { suppressed: hidden } })
+        );
+      };
+
+      fadeTl = gsap.timeline({
+        onUpdate: syncNavGradient,
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top 20%",
@@ -112,7 +128,8 @@ const AboutStudio = () => {
       });
 
       // Pin: 1) text fill → 2) slow shrink → 3) hold small while still sticky
-      gsap.timeline({
+      pinTl = gsap.timeline({
+        onUpdate: syncNavGradient,
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
@@ -125,8 +142,12 @@ const AboutStudio = () => {
             if (self.pin) self.pin.style.overflow = "visible";
             if (self.pin?.parentNode) self.pin.parentNode.style.overflow = "visible";
           },
-          onLeave: snapCircleSmall,
+          onLeave: () => {
+            snapCircleSmall();
+            syncNavGradient();
+          },
           onEnterBack: () => {
+            syncNavGradient();
             if (circle2) {
               gsap.set(circle2, {
                 left: "50%",
@@ -158,6 +179,11 @@ const AboutStudio = () => {
       return () => {
         split1.revert();
         split2.revert();
+        if (gradientHidden) {
+          window.dispatchEvent(
+            new CustomEvent("nav-gradient:suppress", { detail: { suppressed: false } })
+          );
+        }
       };
     }, sectionRef);
 

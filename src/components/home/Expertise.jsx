@@ -172,6 +172,14 @@ export default function Expertise() {
         };
       };
 
+      // Where the item will sit once the sticky panel is pinned (section top at 0)
+      const getItemPinnedTarget = (index) => {
+        const target = getItemTarget(index);
+        if (!target || !ref.current) return target;
+        const sectionTop = ref.current.getBoundingClientRect().top;
+        return { x: target.x, y: target.y - Math.max(0, sectionTop) };
+      };
+
       const placeCircle2 = (x, y, opacity = 1) => {
         if (!circle2) return;
         gsap.set(circle2, {
@@ -257,7 +265,9 @@ export default function Expertise() {
           if (introDoneRef.current && self.progress >= 1) return;
           if (!forwardOrigin) forwardOrigin = aboutStudioDotOrigin();
 
-          const target = getItemTarget(0);
+          // Aim at the pinned position so the dot rises steadily instead of
+          // chasing the title while it is still below the viewport
+          const target = getItemPinnedTarget(0);
           if (!target) return;
 
           hideItemDot(0);

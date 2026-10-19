@@ -21,6 +21,7 @@ export default function Navbar() {
   const [logoLight, setLogoLight] = useState(true);
   const [landingActive, setLandingActive] = useState(false);
   const [showNavGradient, setShowNavGradient] = useState(true);
+  const [navGradientSuppressed, setNavGradientSuppressed] = useState(false);
   const pathname = usePathname();
   const menuOpenRef = useRef(false);
   const overLightSectionRef = useRef(false);
@@ -54,6 +55,16 @@ export default function Navbar() {
     return () => {
       window.removeEventListener("hero-landing:done", onDone);
       window.clearTimeout(fallback);
+    };
+  }, [pathname]);
+
+  // Sections (e.g. home About circle) can temporarily hide the gradient.
+  useEffect(() => {
+    const onSuppress = (e) => setNavGradientSuppressed(!!e.detail?.suppressed);
+    window.addEventListener("nav-gradient:suppress", onSuppress);
+    return () => {
+      window.removeEventListener("nav-gradient:suppress", onSuppress);
+      setNavGradientSuppressed(false);
     };
   }, [pathname]);
 
@@ -300,13 +311,28 @@ export default function Navbar() {
     };
   }, []);
 
+  const isHome = pathname === "/";
+  const gradientEnabled = pathname !== "/work" && showNavGradient;
+
   return (
     <>
+      {/* Home nav uses mix-blend-difference, which cancels a black gradient on
+          the nav itself, so render the gradient as its own layer underneath. */}
+      {isHome && (
+        <div
+          aria-hidden="true"
+          className={`nav-gradient fixed top-0 left-0 w-full h-16 sm:h-20 z-49 pointer-events-none transition-opacity duration-500 ease-out ${
+            gradientEnabled && !navGradientSuppressed && !landingActive
+              ? "opacity-100"
+              : "opacity-0"
+          }`}
+        />
+      )}
       <nav
         id="site-nav"
         className={`fixed top-0 left-0 w-full z-50 text-foreground transition-opacity duration-200 ease-out ${
-          pathname === "/work" || !showNavGradient ? "" : "nav-gradient"
-        } ${pathname === "/" && !menuOpen ? "mix-blend-difference" : ""} ${
+          gradientEnabled && !isHome ? "nav-gradient" : ""
+        } ${isHome && !menuOpen ? "mix-blend-difference" : ""} ${
           landingActive ? "opacity-0 pointer-events-none" : "opacity-100"
         }`}
       >
