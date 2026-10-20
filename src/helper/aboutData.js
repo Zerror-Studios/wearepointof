@@ -1,7 +1,7 @@
 export const foundersData = [
     {
       name: "Piran Tarapore",
-      role: "FOUNDER & MANAGING DIRECTOR",
+      role: "FOUNDER",
       desc: "Piran builds bridges—between a brand's ambition and the market it is trying to reach, between people who should be in the same room but aren't, between the problem as presented and the one that actually needs solving.\n\nAt Point Of, he leads all things business, strategy, partnerships and growth. He has worked alongside over a hundred brands across industries—and is usually the first call a founder makes when something needs to shift.",
       image: "/about/piran.png",
       objectPosition: "object-[50%_10%]",
