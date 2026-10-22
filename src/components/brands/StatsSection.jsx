@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SplitType from "split-type";
@@ -111,6 +111,17 @@ function OdometerStatNumber({ raw, active, className }) {
   );
 }
 
+/* Odometer that rolls in/out with its own visibility (mobile/tablet: stats sit one per row) */
+function InViewOdometer({ raw, className }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { amount: 0.5 });
+  return (
+    <div ref={ref}>
+      <OdometerStatNumber raw={raw} active={inView} className={className} />
+    </div>
+  );
+}
+
 /* ---------- Main ---------- */
 
 function StaticStatsSection() {
@@ -142,21 +153,10 @@ function StaticStatsSection() {
             >
               <div className="flex items-baseline gap-3">
                 {/* Number */}
-                <div className="overflow-hidden">
-                  <motion.h3
-                    initial={{ y: "100%" }}
-                    whileInView={{ y: "0%" }}
-                    viewport={{ once: true }}
-                    transition={{
-                      delay: 0.1 + index * 0.1,
-                      duration: 1,
-                      ease: [0.22, 1, 0.36, 1],
-                    }}
-                    className="text-3xl font-heading font-medium leading-[1.1] tracking-[1px] text-heading sm:text-4xl"
-                  >
-                    {item.number}
-                  </motion.h3>
-                </div>
+                <InViewOdometer
+                  raw={item.number}
+                  className="text-3xl font-heading font-medium leading-[1.1] tracking-[1px] text-heading sm:text-4xl"
+                />
 
                 {/* Label */}
                 <motion.p

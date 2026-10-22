@@ -300,7 +300,8 @@ const HeroSection = ({
 
           {/* ── Staggered lines mode ── */}
           {lines ? (
-            <h2 className="heading-xl text-subheading max-w-[90%] sm:max-w-[80%] md:max-w-[700px] xl:max-w-[900px]">
+            <h2 className="heading-xl text-subheading max-sm:text-[min(24px,calc((100vw-48px)/12.6))] sm:max-w-[80%] md:max-w-[700px] xl:max-w-[900px]">
+              {/* Phones: font sized so each line (longest ≈ 12.23em in Lausanne 200) fits on one line */}
               {lines.map((line, i) => (
                 <span
                   key={i}

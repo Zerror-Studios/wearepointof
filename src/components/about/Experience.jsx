@@ -99,7 +99,7 @@ const Experience = () => {
 
   return (
     <div ref={sectionRef} className="relative w-full">
-      <div className="w-full min-[700px]:pl-52 lg:pl-72 xl:pl-80 2xl:pl-120 px-6 sm:px-10 py-16 sm:py-20 md:py-28 lg:py-32">
+      <div className="w-full px-6 sm:px-10 md:px-12 xl:pl-80 2xl:pl-120 xl:pr-6 py-16 sm:py-20 md:py-28 lg:py-32">
         <div ref={tickerRef}>
 
         {/* Mobile */}
@@ -126,9 +126,10 @@ const Experience = () => {
           </div>
         </div>
 
-        {/* Tablet & desktop: year + vertical line sit in the left gutter */}
-        <div className="relative hidden min-[700px]:block">
-          <div className="absolute inset-y-0 right-full hidden min-[700px]:flex flex-row items-stretch h-full pr-6 lg:pr-10">
+        {/* Tablet: year | line | text in one row at full width.
+            Desktop (xl): year + line hang in the left gutter beside the text. */}
+        <div className="relative hidden min-[700px]:flex xl:block">
+          <div className="flex flex-row items-stretch shrink-0 pr-6 lg:pr-10 xl:absolute xl:inset-y-0 xl:right-full xl:h-full">
             <div className="flex flex-col items-end pr-4 lg:pr-6">
               <span
                 ref={yearDesktopRef}
@@ -153,7 +154,7 @@ const Experience = () => {
             </div>
           </div>
 
-          <div ref={copyDesktopRef} className="max-w-[560px]" style={{ opacity: 0 }}>
+          <div ref={copyDesktopRef} className="min-w-0 flex-1 xl:max-w-[560px]" style={{ opacity: 0 }}>
             <p className="para text-desc">
               <span className="text-white">Point Of was founded in 2019 by Piran Tarapore and Pearl Jain —</span> with a belief that design is most powerful when it starts with a question, not an answer.
             </p>
