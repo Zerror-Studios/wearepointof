@@ -714,12 +714,13 @@ const WorkSection = ({ projects }) => {
         onReset={onResetFilters}
       />
 
-      {/* ── Side text: heading(s) first, gist second ── */}
+      {/* ── Side text: heading(s) first, gist second ──
+          Below lg it sits 1rem above the centred card (300px, 350px from md) */}
       <div className="absolute inset-0 z-10 pointer-events-none overflow-visible">
         {items.map((project, i) => (
           <div
             key={`text-${i}`}
-            className="absolute left-0 right-0 top-24 sm:top-20 md:top-[11%] items-start text-left max-lg:max-h-[calc(50%-min(42vw,11rem)-0.5rem)] max-lg:overflow-hidden max-lg:justify-end lg:left-16 lg:right-auto xl:left-20 lg:top-1/2 lg:-translate-y-1/2 lg:items-start lg:text-left w-full max-lg:max-w-none lg:w-[min(500px,calc(50vw-135px-5.5rem))] xl:w-[min(500px,calc(50vw-200px-7rem))] min-w-0 flex flex-col"
+            className="absolute left-0 right-0 max-md:bottom-[calc(50%+150px+1rem)] md:max-lg:bottom-[calc(50%+175px+1rem)] max-md:max-h-[calc(50%-150px-6rem)] md:max-lg:max-h-[calc(50%-175px-6rem)] items-start text-left max-lg:overflow-hidden lg:left-16 lg:right-auto xl:left-20 lg:top-1/2 lg:-translate-y-1/2 lg:items-start lg:text-left w-full max-lg:max-w-none lg:w-[min(500px,calc(50vw-135px-5.5rem))] xl:w-[min(500px,calc(50vw-200px-7rem))] min-w-0 flex flex-col"
           >
 
             <div className="w-full min-w-0 flex flex-col items-start lg:items-stretch lg:text-left">
@@ -729,7 +730,7 @@ const WorkSection = ({ projects }) => {
                   ref={(el) => {
                     textRefs.current[i] = [el];
                   }}
-                  className="m-0 block w-full min-w-0 heading-xl text-heading text-left py-px break-words"
+                  className="m-0 block w-full min-w-0 heading-xl text-[22px] md:text-[28px] lg:text-[38px] xl:text-[3.2vw] text-heading text-left py-px break-words"
                   style={{
                     willChange: "transform, opacity",
                     transformOrigin: getTitleTransformOrigin(),

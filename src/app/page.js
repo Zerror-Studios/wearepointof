@@ -42,6 +42,8 @@ const Home = async () => {
         </>}
         buttonTitle={"Let's find yours"}
         href="/connect#get-in-touch"
+        // Same gap as BrandsSection; bottom is short of the footer's own top padding
+        paddingClass="pt-24 sm:pt-28 md:pt-40 lg:pt-48 xl:pt-52 pb-14 sm:pb-18 md:pb-24 lg:pb-28 xl:pb-32"
       />
       {/* Center dot—always fixed at viewport center across all pages */}
       <CenterDot />

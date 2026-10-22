@@ -7,6 +7,8 @@ gsap.registerPlugin(ScrollTrigger);
 
 const START_YEAR = 2019;
 const END_YEAR = 2026;
+// Share of the scroll range that holds on START_YEAR before counting up
+const HOLD = 0.35;
 
 const Experience = () => {
   const sectionRef = useRef(null);
@@ -53,9 +55,9 @@ const Experience = () => {
       );
 
       gsap.fromTo(years(),
-        { opacity: 0.2 },
+        { opacity: 0.6 },
         {
-          opacity: 0.75,
+          opacity: 1,
           ease: "none",
           scrollTrigger: {
             trigger: tickerRef.current,
@@ -72,9 +74,12 @@ const Experience = () => {
         end: "top 30%",
         scrub: true,
         onUpdate: (self) => {
-          const slots = END_YEAR - START_YEAR + 1;
+          const steps = END_YEAR - START_YEAR;
+          const t = (self.progress - HOLD) / (1 - HOLD);
           const value = String(
-            START_YEAR + Math.min(slots - 1, Math.floor(self.progress * slots))
+            t <= 0
+              ? START_YEAR
+              : START_YEAR + Math.min(steps, Math.floor(t * steps) + 1)
           );
           years().forEach((el) => {
             el.textContent = value;
@@ -94,11 +99,11 @@ const Experience = () => {
 
   return (
     <div ref={sectionRef} className="relative w-full">
-      <div className="w-full md:pl-12 xl:pl-80 2xl:pl-120 px-6 sm:px-10 py-16 sm:py-20 md:py-28 lg:py-32">
+      <div className="w-full min-[700px]:pl-52 lg:pl-72 xl:pl-80 2xl:pl-120 px-6 sm:px-10 py-16 sm:py-20 md:py-28 lg:py-32">
         <div ref={tickerRef}>
 
         {/* Mobile */}
-        <div className="flex flex-col space-y-6 xl:hidden">
+        <div className="flex flex-col space-y-6 min-[700px]:hidden">
           <span
             ref={yearMobileRef}
             className="font-bold leading-none tracking-tight select-none tabular-nums"
@@ -121,9 +126,9 @@ const Experience = () => {
           </div>
         </div>
 
-        {/* Desktop: year + vertical line sit in the left gutter */}
-        <div className="relative hidden xl:block">
-          <div className="absolute inset-y-0 right-full hidden md:flex flex-row items-stretch h-full pr-6 lg:pr-10">
+        {/* Tablet & desktop: year + vertical line sit in the left gutter */}
+        <div className="relative hidden min-[700px]:block">
+          <div className="absolute inset-y-0 right-full hidden min-[700px]:flex flex-row items-stretch h-full pr-6 lg:pr-10">
             <div className="flex flex-col items-end pr-4 lg:pr-6">
               <span
                 ref={yearDesktopRef}

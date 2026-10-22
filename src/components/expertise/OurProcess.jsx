@@ -6,6 +6,54 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import { useGSAP } from "@gsap/react";
 
+// Mobile/tablet path: bends alternate left/right every MOBILE_BEND_GAP units.
+// Handles at 0.3634 × gap make each half-wave match a sine curve.
+const MOBILE_VIEW_W = 741;
+const MOBILE_VIEW_H = 3760;
+const MOBILE_BEND_GAP = 540;
+const MOBILE_BEND_X = [210.5, 530.5];
+const MOBILE_PATH_Y = Array.from({ length: 7 }, (_, i) => 200 + i * MOBILE_BEND_GAP);
+// Last curve runs out to the left text edge (5%) so the dot drops in line with the left column
+const MOBILE_END_X = MOBILE_VIEW_W * 0.05;
+const MOBILE_PATH_D = MOBILE_PATH_Y.reduce((d, y, i) => {
+  const x = i === MOBILE_PATH_Y.length - 1 ? MOBILE_END_X : MOBILE_BEND_X[i % 2];
+  if (i === 0) return `M${x} ${y}`;
+  const prevX = MOBILE_BEND_X[(i - 1) % 2];
+  const handle = MOBILE_BEND_GAP * 0.3634;
+  return `${d} C${prevX} ${y - MOBILE_BEND_GAP + handle} ${x} ${y - handle} ${x} ${y}`;
+}, "");
+
+const MOBILE_STEPS = [
+  {
+    title: "Discovery",
+    desc: "We dive deep into your brand, business, and objectives to create a clear and strategic roadmap that aligns with your goals.",
+  },
+  {
+    title: "Strategy",
+    desc: "We align brand strategy with your vision—backed by research, insight, and creative clarity.",
+  },
+  {
+    title: "Creative Development",
+    desc: "We explore design references, create moodboards, and define a shared visual direction.",
+  },
+  {
+    title: "Design & Refine",
+    desc: "We design, present concepts, and refine them through collaborative rounds of feedback.",
+  },
+  {
+    title: "Optimisation & Handoff",
+    desc: "We package up final assets, document everything, and ensure your team is set up to scale.",
+  },
+  {
+    title: "Media Production",
+    desc: "Production that captures and conveys brand narratives with precision, ensuring clarity and engagement across platforms.",
+  },
+  {
+    title: "Support",
+    desc: "Need more? We offer ongoing design support through flexible, collaborative retainer options.",
+  },
+];
+
 const OurProcess = () => {
   const sectionRef = useRef(null);
   const svgContainerRef = useRef(null);
@@ -110,16 +158,52 @@ const OurProcess = () => {
               delay: 2.5,
             },
             "a"
-          )
-          .to(circleGroup, {
-            y: "+=800",
-            ease: "bounce.out",
-            duration: 0.6,
-          })
-          .to(circleGroup, {
-            opacity: 0,
-            duration: 0,
+          );
+
+        // Hand the dot off to Our Approach's first dot (.apr-circle1) while #page4 scrolls in:
+        // the fixed overlay dot travels from the path's end to the target, so it reads as one dot.
+        const page4 = document.querySelector("#page4");
+        const target = document.querySelector(".apr-circle1");
+        if (page4 && target) {
+          const centerOf = (el) => {
+            const r = el.getBoundingClientRect();
+            return { x: r.left + r.width / 2, y: r.top + r.height / 2, size: r.width };
+          };
+          const ease = gsap.parseEase("power2.inOut");
+          // Process dot (#f2f2ee) → Approach dot (--secondary) so the swap is invisible
+          const tint = gsap.utils.interpolate("#f2f2ee", "#E8E8E1");
+
+          const setHandoff = (p) => {
+            gsap.set(circleGroup, { visibility: p > 0 ? "hidden" : "visible" });
+            gsap.set(target, { visibility: p >= 1 ? "visible" : "hidden" });
+            if (p <= 0 || p >= 1) {
+              gsap.set(newCircle, { opacity: 0 });
+              return;
+            }
+            const from = centerOf(circle);
+            const to = centerOf(target);
+            const e = ease(p);
+            const size = from.size + (to.size - from.size) * e;
+            gsap.set(newCircle, {
+              opacity: 1,
+              backgroundColor: tint(e),
+              width: size,
+              height: size,
+              x: from.x + (to.x - from.x) * e - size / 2,
+              y: from.y + (to.y - from.y) * e - size / 2,
+            });
+          };
+
+          ScrollTrigger.create({
+            trigger: page4,
+            start: "top bottom",
+            end: "top top",
+            onUpdate: (self) => setHandoff(self.progress),
+            onRefresh: (self) => setHandoff(self.progress),
+            onLeave: () => setHandoff(1),
+            onLeaveBack: () => setHandoff(0),
           });
+        }
       });
 
       return () => ctx.revert();
@@ -142,8 +226,6 @@ const OurProcess = () => {
           typeof window !== "undefined" &&
           window.matchMedia("(min-width: 768px) and (max-width: 1279px)").matches;
         const scrubMotion = isTablet ? 0.32 : 0.25;
-        const scrubPin = isTablet ? 0.42 : 0.35;
-        const pinEnd = isTablet ? "+=165%" : "+=150%";
 
         gsap.set(circleWrap, { y: 0, opacity: 1, force3D: true });
         gsap.set(circleGroup, {
@@ -165,40 +247,28 @@ const OurProcess = () => {
           autoRotate: false,
         };
 
+        let focusedStep = null;
         function updateTextGlow() {
-          const circleY =
-            circle.getBoundingClientRect().top +
-            circle.getBoundingClientRect().height / 2;
+          const circleRect = circle.getBoundingClientRect();
+          const circleY = circleRect.top + circleRect.height / 2;
           let closestStep = null;
           let minDistance = Infinity;
 
           steps.forEach((step) => {
             if (!step) return;
-            const texts = step.querySelectorAll("text");
-            if (texts.length === 0) return;
-            let sumY = 0;
-            texts.forEach((text) => {
-              const textY =
-                text.getBoundingClientRect().top +
-                text.getBoundingClientRect().height / 2;
-              sumY += textY;
-            });
-            const avgY = sumY / texts.length;
-            const distanceY = Math.abs(circleY - avgY);
+            const rect = step.getBoundingClientRect();
+            const distanceY = Math.abs(circleY - (rect.top + rect.height / 2));
             if (distanceY < minDistance) {
               minDistance = distanceY;
               closestStep = step;
             }
           });
 
+          if (closestStep === focusedStep) return;
+          focusedStep = closestStep;
           steps.forEach((step) => {
             if (!step) return;
-            const texts = step.querySelectorAll("text");
-            const isFocused = step === closestStep;
-          gsap.set(texts, {
-            opacity: isFocused ? 1 : 0.2,
-            fill: isFocused ? "var(--color-heading)" : "var(--color-desc)",
-          });
+            step.style.opacity = step === closestStep ? "1" : "0.2";
           });
         }
 
@@ -218,31 +288,53 @@ const OurProcess = () => {
           ease: "none",
         });
 
-        gsap
-          .timeline({
-            scrollTrigger: {
-              trigger: "#svg-mobile",
-              start: "bottom 95%",
-              end: pinEnd,
-              scrub: scrubPin,
-              pin: true,
-              anticipatePin: 1,
-              invalidateOnRefresh: true,
-            },
-          })
-          .to(circleWrap, {
-            y: isTablet ? "+=620" : "+=700",
-            ease: "none",
-            duration: 1,
-            force3D: true,
-          })
-          .to(circleWrap, {
-            opacity: 0,
-            duration: 0.4,
-            ease: "none",
-            force3D: true,
-          });
+        // Hand the dot off to Our Approach's first rail dot: the fixed overlay dot travels from
+        // the path's end to it, landing as the rail starts filling (its "center 65%" start).
+        const newCircle = dotRef.current;
+        const target = document.querySelector(".approach-mobile .approach-dot");
+        if (newCircle && target) {
+          const centerOf = (el) => {
+            const r = el.getBoundingClientRect();
+            return { x: r.left + r.width / 2, y: r.top + r.height / 2, size: r.width };
+          };
+          const ease = gsap.parseEase("power2.inOut");
+          const tint = gsap.utils.interpolate("#ffffff", "#E8E8E1");
 
+          const setHandoff = (p) => {
+            gsap.set(circleWrap, { visibility: p > 0 ? "hidden" : "visible" });
+            gsap.set(target, { visibility: p >= 1 ? "visible" : "hidden" });
+            if (p <= 0 || p >= 1) {
+              gsap.set(newCircle, { opacity: 0 });
+              return;
+            }
+            const from = centerOf(circle);
+            const to = centerOf(target);
+            const e = ease(p);
+            const size = from.size + (to.size - from.size) * e;
+            gsap.set(newCircle, {
+              opacity: 1,
+              backgroundColor: tint(e),
+              width: size,
+              height: size,
+              x: from.x + (to.x - from.x) * e - size / 2,
+              y: from.y + (to.y - from.y) * e - size / 2,
+            });
+          };
+
+          ScrollTrigger.create({
+            trigger: "#svg-mobile",
+            start: "bottom bottom",
+            endTrigger: target,
+            end: "center 65%",
+            invalidateOnRefresh: true,
+            onUpdate: (self) => setHandoff(self.progress),
+            onRefresh: (self) => setHandoff(self.progress),
+            onLeave: () => setHandoff(1),
+            onLeaveBack: () => setHandoff(0),
+          });
+        }
+
+        updateTextGlow();
         requestAnimationFrame(onLoadRefresh);
         window.addEventListener("load", onLoadRefresh);
       });
@@ -306,12 +398,6 @@ const OurProcess = () => {
             }
             #svg-mobile .our-process-scroll-path {
               stroke-width: 12;
-            }
-            #svg-mobile g.step > text:nth-of-type(1) {
-              font-size: 36px;
-            }
-            #svg-mobile g.step > text:nth-of-type(n + 2) {
-              font-size: 22px;
             }
             #svg-mobile .our-process-scroll-dot {
               r: 9;
@@ -507,7 +593,8 @@ const OurProcess = () => {
                   <tspan
                     key={j}
                     x={item.x}
-                    y={58.1 + j * 28}
+                    // Following lines step by the .para line-height (1.6), in em so it tracks the font size
+                    {...(j === 0 ? { y: 58.1 } : { dy: "1.6em" })}
                     className="jp2 jp5 jp6 text-desc! para"
                   >
                     {line}
@@ -524,128 +611,78 @@ const OurProcess = () => {
         className="our-process-mobile"
         style={{ width: "100%", height: "auto", backgroundColor: "black" }}
       >
-        <div className="our-process-scroll-svg-wrap">
-        <svg
-          id="svg-mobile"
-          width="741"
-          height="3200"
-          viewBox="0 0 741 3200"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          style={{ width: "100%", height: "auto", display: "block" }}
-        >
-          <defs>
-            <radialGradient
-              id="shadowFill"
-              cx="50%"
-              cy="50%"
-              r="50%"
-              fx="50%"
-              fy="50%"
-            >
-              <stop offset="20%" stopColor="#f2f2ee" stopOpacity="0.5" />
-              <stop offset="70%" stopColor="#f2f2ee" stopOpacity="0" />
-            </radialGradient>
-          </defs>
+        {/* Path + dot are SVG; step text is HTML on top so it uses the site type scale.
+            Each step sits at a bend of the path (MOBILE_PATH_Y), on the opposite side. */}
+        <div id="svg-mobile" className="our-process-scroll-svg-wrap relative">
+          <svg
+            width={MOBILE_VIEW_W}
+            height={MOBILE_VIEW_H}
+            viewBox={`0 0 ${MOBILE_VIEW_W} ${MOBILE_VIEW_H}`}
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            style={{ width: "100%", height: "auto", display: "block" }}
+          >
+            <defs>
+              <radialGradient
+                id="shadowFill"
+                cx="50%"
+                cy="50%"
+                r="50%"
+                fx="50%"
+                fy="50%"
+              >
+                <stop offset="20%" stopColor="#f2f2ee" stopOpacity="0.5" />
+                <stop offset="70%" stopColor="#f2f2ee" stopOpacity="0" />
+              </radialGradient>
+            </defs>
 
-          <style>{`
-            .jp4 { fill: var(--color-heading); }
-            .jp6 { fill: var(--color-desc) !important;
-            }
-          `}</style>
+            {/* Snake path—even S-curves, vertical tangent at every bend */}
+            <path
+              ref={mobilePathRef}
+              className="theLine our-process-scroll-path"
+              d={MOBILE_PATH_D}
+              stroke="#292929"
+              strokeWidth="16"
+              strokeMiterlimit="10"
+              strokeLinecap="round"
+            />
 
-          {/* Snake Path */}
-          <path
-            ref={mobilePathRef}
-            className="theLine our-process-scroll-path"
-            d="M186.5 205C186.502 707.686 594.002 386.741 594.002 682.78C594.002 954.439 148.509 889.427 148.504 1139.03C148.499 1388.63 594.002 1288.21 594.002 1497.76C594.002 1757.23 148.503 1617.91 148.505 1844.3C148.507 2013.79 583 2118 583 2264.5C583 2411 544.5 2484.47 188 2566.5C188 2566.5 59.5 2597 46 2697"
-            stroke="#292929"
-            strokeWidth="16"
-            strokeMiterlimit="10"
-            strokeLinecap="round"
-          />
-
-          {/* Step 1—Discovery */}
-          <g className="step" data-step="1" ref={(el) => (mobileStepsRef.current[0] = el)}>
-            <text x="300" y="235.704" className="jp2 jp4 heading-lg text-heading fill-current">Discovery</text>
-            <text x="300" y="278.31" className="jp2 jp5 jp6 text-desc! para fill-current">We dive deep into your brand,</text>
-            <text x="300" y="316.621" className="jp2 jp5 jp6 text-desc! para fill-current">business, and objectives to create</text>
-            <text x="300" y="354.932" className="jp2 jp5 jp6 text-desc! para fill-current">a clear and strategic roadmap</text>
-            <text x="300" y="393.243" className="jp2 jp5 jp6 text-desc! para fill-current">that aligns with your goals.</text>
-          </g>
-
-          {/* Step 2—Strategy */}
-          <g className="step" data-step="2" ref={(el) => (mobileStepsRef.current[1] = el)}>
-            <text x="109" y="650.159" className="jp2 jp4 heading-lg text-heading fill-current">Strategy</text>
-            <text x="109" y="692.765" className="jp2 jp5 jp6 text-desc! para fill-current">We align brand strategy with</text>
-            <text x="109" y="731.075" className="jp2 jp5 jp6 text-desc! para fill-current">your vision—backed by</text>
-            <text x="109" y="769.387" className="jp2 jp5 jp6 text-desc! para fill-current">research, insight, and</text>
-            <text x="109" y="807.698" className="jp2 jp5 jp6 text-desc! para fill-current">creative clarity.</text>
-          </g>
-
-          {/* Step 3—Creative Development */}
-          <g className="step" data-step="3" ref={(el) => (mobileStepsRef.current[2] = el)}>
-            <text x="270" y="1068.1" className="jp2 jp4 heading-lg text-heading fill-current">Creative Development</text>
-            <text x="270" y="1110.7" className="jp2 jp5 jp6 text-desc! para fill-current">We explore design references,</text>
-            <text x="270" y="1149.01" className="jp2 jp5 jp6 text-desc! para fill-current">create moodboards, and</text>
-            <text x="270" y="1187.32" className="jp2 jp5 jp6 text-desc! para fill-current">define a shared visual</text>
-            <text x="270" y="1225.64" className="jp2 jp5 jp6 text-desc! para fill-current">direction.</text>
-          </g>
-
-          {/* Step 4—Design & Refine */}
-          <g className="step" data-step="4" ref={(el) => (mobileStepsRef.current[3] = el)}>
-            <text x="109" y="1459.33" className="jp2 jp4 heading-lg text-heading fill-current">Design &amp; Refine</text>
-            <text x="109" y="1501.94" className="jp2 jp5 jp6 text-desc! para fill-current">We design, present concepts,</text>
-            <text x="109" y="1540.25" className="jp2 jp5 jp6 text-desc! para fill-current">and refine them through</text>
-            <text x="109" y="1578.56" className="jp2 jp5 jp6 text-desc! para fill-current">collaborative rounds of</text>
-            <text x="109" y="1616.87" className="jp2 jp5 jp6 text-desc! para fill-current">feedback.</text>
-          </g>
-
-          {/* Step 5—Optimisation & Handoff */}
-          <g className="step" data-step="5" ref={(el) => (mobileStepsRef.current[4] = el)}>
-            <text x="290" y="1800.65" className="jp2 jp4 heading-lg text-heading fill-current">Optimisation &amp; Handoff</text>
-            <text x="290" y="1843.25" className="jp2 jp5 jp6 text-desc! para fill-current">We package up final assets,</text>
-            <text x="290" y="1881.56" className="jp2 jp5 jp6 text-desc! para fill-current">document everything, and</text>
-            <text x="290" y="1919.88" className="jp2 jp5 jp6 text-desc! para fill-current">ensure your team is set up</text>
-            <text x="290" y="1958.19" className="jp2 jp5 jp6 text-desc! para fill-current">to scale.</text>
-          </g>
-
-          {/* Step 6—Media Production */}
-          <g className="step" data-step="6" ref={(el) => (mobileStepsRef.current[5] = el)}>
-            <text x="50" y="2141.96" className="jp2 jp4 heading-lg text-heading fill-current">Media Production</text>
-            <text x="50" y="2184.57" className="jp2 jp5 jp6 text-desc! para fill-current">Production that captures</text>
-            <text x="50" y="2222.88" className="jp2 jp5 jp6 text-desc! para fill-current">and conveys brand narratives</text>
-            <text x="50" y="2261.19" className="jp2 jp5 jp6 text-desc! para fill-current">with precision, ensuring clarity</text>
-            <text x="50" y="2299.5" className="jp2 jp5 jp6 text-desc! para fill-current">and engagement across platforms.</text>
-          </g>
-
-          {/* Step 7—Support */}
-          <g className="step" data-step="7" ref={(el) => (mobileStepsRef.current[6] = el)}>
-            <text x="274" y="2709.66" className="jp2 jp4 heading-lg text-heading fill-current">Support</text>
-            <text x="274" y="2752.27" className="jp2 jp5 jp6 text-desc! para fill-current">Need more? We offer ongoing</text>
-            <text x="274" y="2790.58" className="jp2 jp5 jp6 text-desc! para fill-current">design support through flexible,</text>
-            <text x="274" y="2828.89" className="jp2 jp5 jp6 text-desc! para fill-current">collaborative retainer</text>
-            <text x="274" y="2867.2" className="jp2 jp5 jp6 text-desc! para fill-current">options.</text>
-          </g>
-
-          {/* Circle: outer wrap = exit motion; inner = motionPath (separate transforms = smooth scroll sync) */}
-          <g id="circleWrap" ref={mobileCircleWrapRef} style={{ willChange: "transform" }}>
-            <g id="circleGroup" ref={mobileCircleGroupRef} style={{ willChange: "transform" }}>
-              <circle
-                ref={mobileCircleRef}
-                className="theCircle our-process-scroll-dot"
-                r="11"
-                fill="white"
-              />
-              <circle
-                className="theCircleShadow our-process-scroll-glow"
-                r="150"
-                opacity="0.05"
-                fill="url(#shadowFill)"
-              />
+            {/* Circle: outer wrap = exit motion; inner = motionPath (separate transforms = smooth scroll sync) */}
+            <g id="circleWrap" ref={mobileCircleWrapRef} style={{ willChange: "transform" }}>
+              <g id="circleGroup" ref={mobileCircleGroupRef} style={{ willChange: "transform" }}>
+                <circle
+                  ref={mobileCircleRef}
+                  className="theCircle our-process-scroll-dot"
+                  r="11"
+                  fill="white"
+                />
+                <circle
+                  className="theCircleShadow our-process-scroll-glow"
+                  r="150"
+                  opacity="0.05"
+                  fill="url(#shadowFill)"
+                />
+              </g>
             </g>
-          </g>
-        </svg>
+          </svg>
+
+          {MOBILE_STEPS.map((step, i) => {
+            // Bends alternate left/right starting on the left, so text alternates right/left
+            const onRight = i % 2 === 0;
+            return (
+              <div
+                key={step.title}
+                ref={(el) => (mobileStepsRef.current[i] = el)}
+                className={`step absolute w-[52%] max-w-[24rem] -translate-y-1/2 transition-opacity duration-500 ease-out ${
+                  onRight ? "right-[5%] text-right" : "left-[5%] text-left"
+                }`}
+                style={{ top: `${(MOBILE_PATH_Y[i] / MOBILE_VIEW_H) * 100}%`, opacity: 0.2 }}
+              >
+                <h3 className="heading-md text-heading">{step.title}</h3>
+                <p className="para text-desc mt-2 md:mt-3">{step.desc}</p>
+              </div>
+            );
+          })}
         </div>
       </div>
     </>

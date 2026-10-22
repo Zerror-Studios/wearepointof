@@ -64,7 +64,7 @@ const StudioConsultancy = () => {
             <h3 className="heading-lg text-heading">
               The Studio
             </h3>
-            <span className="text-sm text-desc tracking-wide">0→1 (Foundation)</span>
+            <span className="text-sm md:text-base xl:text-sm text-desc tracking-wide">0→1 (Foundation)</span>
             <p className="para text-desc">
               This is where brands are born. We take an idea—sometimes just a conviction and a name—and build it into something real. Strategy, positioning, identity, digital, print. The full creative foundation, built to hold weight from day one.
             </p>
@@ -75,7 +75,7 @@ const StudioConsultancy = () => {
             <h3 className="heading-lg text-heading">
               The Consultancy
             </h3>
-            <span className="text-sm text-desc tracking-wide">1→100 (Growth)</span>
+            <span className="text-sm md:text-base xl:text-sm text-desc tracking-wide">1→100 (Growth)</span>
             <p className="para text-desc">
               This is where brands grow. Once the foundation is set, we stay in—as creative partner, strategic counsel, and fractional CMO. Brand strategy, media production, social, campaigns, events, performance. Whatever the brand needs to scale, we're already in the room.
             </p>

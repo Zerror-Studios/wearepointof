@@ -14,6 +14,7 @@ const CTASection = ({
   graphic = false,
   br = false,
   href = "/connect",
+  paddingClass = "py-16 sm:py-20 md:py-28 lg:py-32",
 } = {}) => {
   const graphicRef = useRef(null);
 
@@ -63,7 +64,7 @@ const CTASection = ({
 
   return (
     <section
-      className="w-full bg-background relative flex items-center justify-center px-6 sm:px-10 md:px-12 lg:px-14 xl:px-20 py-16 sm:py-20 md:py-28 lg:py-32"
+      className={`w-full bg-background relative flex items-center justify-center px-6 sm:px-10 md:px-12 lg:px-14 xl:px-20 ${paddingClass}`}
     >
       <div className="w-full text-left flex flex-col items-start sm:w-auto sm:text-center sm:items-center">
         {/* HEADING */}

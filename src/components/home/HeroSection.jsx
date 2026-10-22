@@ -301,12 +301,12 @@ useEffect(() => {
         transition={{ duration: 0.75, ease: "easeOut", delay: 0.05 }}
       >
         {/* First line */}
-        <h1 className="font-thin tracking-[0.5px] leading-[1.2] font-heading mb-2 text-xl sm:text-4xl md:text-3xl lg:text-[2rem] xl:text-[2.2rem]">
+        <h1 className="font-thin tracking-[0.5px] leading-[1.2] font-heading mb-2 text-xl sm:text-2xl md:text-3xl lg:text-[2rem] xl:text-[2.2rem]">
           What is the Point Of
         </h1>
 
         {/* Typing line */}
-        <p className="w-full max-w-5xl text-center font-medium leading-[1.15] tracking-[1px] uppercase font-heading text-xl sm:text-6xl md:text-3xl lg:text-[2.7rem] xl:text-[3rem]">
+        <p className="w-full max-w-5xl text-center font-medium leading-[1.15] tracking-[1px] uppercase font-heading text-xl sm:text-4xl md:text-[2.5rem] lg:text-[2.7rem] xl:text-[3rem]">
           <span
             className="text-white transition-[text-shadow] duration-700"
             style={{

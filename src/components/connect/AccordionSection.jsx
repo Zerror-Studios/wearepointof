@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { Plus } from "lucide-react";
 import Button from '../common/Button'
 
-const AccordionSection = ({ data, title, description, padding = "editorial" }) => {
+const AccordionSection = ({ data, title, description, padding = "editorial", flushBottom = false }) => {
     const [activeIndex, setActiveIndex] = useState(null);
 
     const toggle = (index) => {
@@ -17,7 +17,7 @@ const AccordionSection = ({ data, title, description, padding = "editorial" }) =
         : "px-6 sm:px-10 md:pl-12 xl:pl-80 2xl:pl-120 pr-6";
 
     return (
-        <section className="w-full py-16 sm:py-20 md:py-28 lg:py-32">
+        <section className={`w-full pt-16 sm:pt-20 md:pt-28 lg:pt-32 ${flushBottom ? "" : "pb-16 sm:pb-20 md:pb-28 lg:pb-32"}`}>
             <div className={`w-full ${padClass}`}>
                 {/* Vacancies */}
                 <h3 className="heading-xl text-subheading ">

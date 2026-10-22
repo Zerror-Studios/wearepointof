@@ -10,8 +10,10 @@ import Flip from "gsap/src/Flip";
 
 gsap.registerPlugin(Flip);
 
-const WorkCard = ({ slug, title, image, video, enableFlipTransition = false, className = "" }) => {
+const WorkCard = ({ slug, title, image, video, enableFlipTransition = false, videoOnTouch = false, className = "" }) => {
   const router = useRouter();
+  // Touch screens can't hover to reveal the video, so drop the cover image there
+  const coverTouchClass = videoOnTouch && video ? "pointer-coarse:hidden" : "";
   const cardRef = useRef(null);
   const [isExpanding, setIsExpanding] = useState(false);
 
@@ -98,7 +100,7 @@ const WorkCard = ({ slug, title, image, video, enableFlipTransition = false, cla
             height={1000}
             src={image}
             alt={title}
-            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 group-hover:opacity-0"
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 group-hover:opacity-0 ${coverTouchClass}`}
           />
         </div>
       </Link>
@@ -144,7 +146,7 @@ const WorkCard = ({ slug, title, image, video, enableFlipTransition = false, cla
           height={1000}
           src={image}
           alt={title}
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 group-hover:opacity-0"
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 group-hover:opacity-0 ${coverTouchClass}`}
         />
       </div>
     </Link>

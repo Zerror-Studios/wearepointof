@@ -46,43 +46,57 @@ body {
 @layer components {
   .heading-xl {
     @apply font-heading font-[200] leading-[1.3] tracking-[0px]
-    text-[22px]
-    md:text-[28px]
-    lg:text-[38px]
+    text-[24px]
+    sm:text-[28px]
+    md:text-[34px]
+    lg:text-[40px]
     xl:text-[3.2vw];
   }
   
   .heading-lg {
     @apply font-heading font-extralight leading-[1.2] tracking-[0px]
-    text-[20px]
-    md:text-[26px]
-    lg:text-[30px]
+    text-[21px]
+    sm:text-[24px]
+    md:text-[28px]
+    lg:text-[32px]
     xl:text-4xl;
   }
   
   .heading-md {
     @apply font-heading font-light leading-[1.2] tracking-[0px]
-    text-[17px]
-    md:text-xl
-    lg:text-[20px]
+    text-[18px]
+    md:text-[21px]
+    lg:text-[22px]
     xl:text-2xl;
   }
   
   .para {
     @apply font-body font-normal leading-[1.6] tracking-[0.3px]
     text-[15px]
-    md:text-base
-    lg:text-[16px]
+    md:text-[18px]
+    lg:text-[18px]
     xl:text-[18px];
   }
 
   .para-acc {
     @apply font-body font-normal leading-[1.6] tracking-[0.3px]
-    text-[13px]
-    md:text-sm
-    lg:text-[14px]
-    xl:text-[18px];
+    text-[14px]
+    md:text-[16px]
+    lg:text-[16px]
+    xl:text-[16px];
   }
+  /* Touch tablets (iPad mini 744px → iPad Pro 13" / Surface Pro landscape ~1376px):
+     width breakpoints lump them in with phones or laptops, so size body copy by input type */
+  @media (min-width: 700px) and (hover: none) and (pointer: coarse) {
+    .para {
+      font-size: 19px;
+    }
+
+    .para-acc {
+      font-size: 17px;
+    }
+  }
+
   /* Underline hover: width 0 -> 100% */
   .link-underline {
     @apply relative inline-block w-fit;

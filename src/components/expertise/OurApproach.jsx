@@ -42,12 +42,7 @@ const OurApproach = () => {
                
                 )
                 .to({}, { duration: 0.35 })
-                .fromTo(
-                    ".apr-circle1, .apr-circle1-inner",
-                    { backgroundColor: "var(--light-line)", borderColor: "var(--light-line)" },
-                    { backgroundColor: "var(--secondary)", borderColor: "var(--secondary)", duration: 0.3 },
-                    "a"
-                )
+                // .apr-circle1 starts filled: it's where the OurProcess dot lands
                 .fromTo(
                     ".approach1",
                     { opacity: 0, y: 50 },
@@ -262,6 +257,14 @@ const OurApproach = () => {
                     .approach-desktop { display: none  !important; }
                     .approach-mobile  { display: block !important; }
                 }
+                /* Same rendered size as the OurProcess dot (r 11 / 9 in a 741-wide SVG) */
+                .approach-dot { width: calc(22 / 741 * 100vw); height: calc(22 / 741 * 100vw); }
+                @media (min-width: 768px) {
+                    .approach-dot {
+                        width: calc(18 / 741 * min(92vw, 920px));
+                        height: calc(18 / 741 * min(92vw, 920px));
+                    }
+                }
             `}</style>
 
             {/* ─── DESKTOP (original, completely unchanged) ─── */}
@@ -292,15 +295,15 @@ const OurApproach = () => {
                                 marginTop: -12.5,
                                 width: 25,
                                 height: 25,
-                                backgroundColor: "var(--light-line)",
-                                border: "1px solid var(--light-line)",
+                                backgroundColor: "var(--secondary)",
+                                border: "1px solid var(--secondary)",
                             }}
                         >
                             <div
                                 className="apr-circle1-inner h-full w-full rounded-full"
                                 style={{
-                                    backgroundColor: "var(--light-line)",
-                                    border: "1px solid var(--light-line)",
+                                    backgroundColor: "var(--secondary)",
+                                    border: "1px solid var(--secondary)",
                                 }}
                             />
                         </div>
@@ -417,16 +420,16 @@ const OurApproach = () => {
 
                     {/* Card 1—Strategy */}
                     <div className="approach-card-mobile relative mb-[12vw] flex gap-5">
-                        <div className="relative z-10 flex w-3 shrink-0 justify-center pt-1">
+                        <div className="relative z-10 flex shrink-0 justify-center pt-[5px] md:pt-[3px]">
                             <span
                                 ref={(el) => { mobileDotRefs.current[0] = el; }}
-                                className="block h-2.5 w-2.5 rounded-full"
+                                className="block approach-dot rounded-full"
                                 style={{ backgroundColor: "#5a5a5a" }}
                             />
                         </div>
                         <div className="approach-card-mobile-content min-w-0 flex-1" style={{ opacity: 0 }}>
-                            <h2 className="heading-md mb-[4vw] w-fit">Strategy</h2>
-                            <h5 className="para mb-[3vw] text-desc">
+                            <h2 className="heading-md text-heading mb-2 md:mb-3 w-fit">Strategy</h2>
+                            <h5 className="para mb-3 md:mb-4 text-desc">
                                 We collaborate closely to uncover your brand&apos;s vision,
                                 audience, and market position—building a strategy that
                                 drives real results.
@@ -441,16 +444,16 @@ const OurApproach = () => {
 
                     {/* Card 2—Design */}
                     <div className="approach-card-mobile relative mb-[12vw] flex gap-5">
-                        <div className="relative z-10 flex w-3 shrink-0 justify-center pt-1">
+                        <div className="relative z-10 flex shrink-0 justify-center pt-[5px] md:pt-[3px]">
                             <span
                                 ref={(el) => { mobileDotRefs.current[1] = el; }}
-                                className="block h-2.5 w-2.5 rounded-full"
+                                className="block approach-dot rounded-full"
                                 style={{ backgroundColor: "#5a5a5a" }}
                             />
                         </div>
                         <div className="approach-card-mobile-content min-w-0 flex-1" style={{ opacity: 0 }}>
-                            <h2 className="heading-md mb-[4vw] w-fit">Design</h2>
-                            <h5 className="para mb-[3vw] text-desc">
+                            <h2 className="heading-md text-heading mb-2 md:mb-3 w-fit">Design</h2>
+                            <h5 className="para mb-3 md:mb-4 text-desc">
                                 Our bold, purpose-driven designs are crafted to make an
                                 impact. From typography to color, everything is chosen to
                                 communicate clearly and beautifully.
@@ -464,16 +467,16 @@ const OurApproach = () => {
 
                     {/* Card 3—Technology */}
                     <div className="approach-card-mobile relative flex gap-5">
-                        <div className="relative z-10 flex w-3 shrink-0 justify-center pt-1">
+                        <div className="relative z-10 flex shrink-0 justify-center pt-[5px] md:pt-[3px]">
                             <span
                                 ref={(el) => { mobileDotRefs.current[2] = el; }}
-                                className="block h-2.5 w-2.5 rounded-full"
+                                className="block approach-dot rounded-full"
                                 style={{ backgroundColor: "#5a5a5a" }}
                             />
                         </div>
                         <div className="approach-card-mobile-content min-w-0 flex-1" style={{ opacity: 0 }}>
-                            <h2 className="heading-md mb-[4vw] w-fit">Technology</h2>
-                            <h5 className="para mb-[3vw] text-desc">
+                            <h2 className="heading-md text-heading mb-2 md:mb-3 w-fit">Technology</h2>
+                            <h5 className="para mb-3 md:mb-4 text-desc">
                                 Beyond aesthetics, we focus on how your brand performs
                                 across platforms—crafting seamless, intelligent experiences
                                 that adapt in real time.

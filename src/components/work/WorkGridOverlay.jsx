@@ -89,11 +89,13 @@ export default function WorkGridOverlay({
           <GridButton title={"FILTER"} onClick={toggleFilter} className={"mt-0!"} />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 md:gap-12 lg:gap-0 lg:grid-cols-3 px-6 sm:px-10 md:px-12 lg:px-14 xl:px-20 pt-20 sm:pt-24 lg:pt-28  xl:pt-0 pb-24 sm:pb-28 lg:pb-28 xl:pb-0">
+        {/* xl: rows are the 400px card + half the leftover viewport, so the gap between rows is half of
+            what a full-screen row gave; the top/bottom padding keeps the first and last cards centred */}
+        <div className="grid grid-cols-1 md:grid-cols-2 md:gap-12 lg:gap-0 lg:grid-cols-3 px-6 sm:px-10 md:px-12 lg:px-14 xl:px-20 pt-20 sm:pt-24 lg:pt-28 xl:pt-[calc(25vh-100px)] pb-24 sm:pb-28 lg:pb-28 xl:pb-[calc(25vh-100px)]">
           {projects.map((project, index) => (
             <div
               key={project.slug}
-              className={`w-full h-auto py-10 sm:py-14 lg:py-20 xl:h-screen xl:py-0 flex items-center justify-center ${col2Map[index % 2]} ${col3Map[index % 3]}`}
+              className={`w-full h-auto py-10 sm:py-14 lg:py-20 xl:h-[calc(50vh+200px)] xl:py-0 flex items-center justify-center ${col2Map[index % 2]} ${col3Map[index % 3]}`}
             >
               <WorkCard
                 slug={project.slug}

@@ -33,7 +33,7 @@ const logos = [
 
 const BrandsSection = () => {
   return (
-    <section className="w-full pt-24 md:pt-36 lg:pt-44 xl:pt-52 pb-24 md:pb-36 lg:pb-44 xl:pb-20 bg-background relative">
+    <section className="w-full pt-24 sm:pt-28 md:pt-40 lg:pt-48 xl:pt-52 bg-background relative">
       <div className="max-w-5xl mx-auto px-6 sm:px-10 md:px-12 lg:px-14 xl:px-20 flex flex-col items-start">
         <h2 className="heading-xl text-heading mb-4">Our partnerships</h2>
         <p className="heading-xl text-desc">
@@ -43,7 +43,7 @@ const BrandsSection = () => {
       </div>
 
       {/* Logo marquee — top gap matches space above the heading */}
-      <div className="w-full pt-24 md:pt-36 lg:pt-44 xl:pt-52">
+      <div className="w-full pt-24 sm:pt-28 md:pt-40 lg:pt-48 xl:pt-52">
         <div className="relative w-full overflow-hidden">
           <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-linear-to-r from-background to-transparent" />
           <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-linear-to-l from-background to-transparent" />
@@ -53,7 +53,7 @@ const BrandsSection = () => {
             {[...logos, ...logos].map((logo, idx) => (
               <div
                 key={`${logo.src}-${idx}`}
-                className="h-10 sm:h-14 md:h-16 w-fit shrink-0 flex items-center opacity-80 hover:opacity-100 transition-opacity"
+                className="h-10 sm:h-14 w-fit shrink-0 flex items-center opacity-80 hover:opacity-100 transition-opacity"
               >
                 <Image
                   width={logo.width}

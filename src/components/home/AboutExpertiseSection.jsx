@@ -24,6 +24,7 @@ export default function AboutExpertiseSection() {
       <div className="xl:hidden relative z-[1] bg-background">
         <AccordionSection
           padding="footer"
+          flushBottom
           title="Expertise"
           data={expertiseItems.map((it) => ({
             title: it.title,

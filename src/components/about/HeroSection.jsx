@@ -253,7 +253,7 @@ const HeroSection = ({
         >
           <GradientBlinds
             className="h-full w-full min-h-full min-w-full"
-            gradientColors={["#C4B87A", "#A89B55", "#8F8348", "#776C3F"]}
+            gradientColors={["#A5AB8A"]}
             angle={0}
             noise={0.025}
             blindCount={44}
@@ -331,7 +331,7 @@ const HeroSection = ({
             </h2>
           )}
 
-          <div ref={ctaRef} className="pointer-events-auto" style={lines ? { opacity: 0 } : {}}>
+          <div ref={ctaRef} data-hero-cta className="pointer-events-auto" style={lines ? { opacity: 0 } : {}}>
             <Button title={btntitle} onClick={onClick} href={href} />
           </div>
         </div>

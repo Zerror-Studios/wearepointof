@@ -354,13 +354,15 @@ export default function OurWorkShowreel({ posts = [] }) {
           {(posts ?? []).map((post, index) => (
             <div
               key={post.slug ?? index}
-              className="work-card shrink-0 w-[85vw] max-w-[380px] sm:w-[320px] sm:max-w-none xl:w-[400px]"
+              className="work-card shrink-0 w-[85vw] max-w-[380px] sm:w-[320px] sm:max-w-none xl:w-[400px] md:pointer-coarse:w-[min(460px,62vh)]! xl:pointer-coarse:w-[min(480px,55vh)]!"
             >
               <WorkCard
                 slug={post.slug}
                 title={post.title}
                 image={post.coverImage}
                 video={post.microanimation}
+                videoOnTouch
+                className="lg:pointer-coarse:w-full!"
               />
             </div>
           ))}
@@ -484,20 +486,20 @@ export default function OurWorkShowreel({ posts = [] }) {
           >
             {/* Panel 1 */}
             <div className="relative flex h-screen items-center justify-center">
-              <Image src="https://www.wearepointof.com/home/sticker1.png" alt="sticker" width={200} height={200} sizes="(max-width: 640px) 96px, (max-width: 1279px) 140px, 200px" className="absolute top-6 left-4 h-auto w-24 rotate-[-10deg] sm:top-10 sm:left-8 sm:w-32 md:w-40 xl:left-10 xl:w-48" />
-              <Image src="https://www.wearepointof.com/home/sticker2.png" alt="sticker" width={200} height={200} sizes="(max-width: 640px) 96px, (max-width: 1279px) 140px, 200px" className="absolute right-4 bottom-6 h-auto w-24 rotate-10 sm:right-8 sm:bottom-10 sm:w-32 md:w-40 xl:right-10 xl:w-48" />
+              <Image src="/home/sticker1.png" alt="sticker" width={200} height={200} sizes="(max-width: 640px) 96px, (max-width: 1279px) 140px, 200px" className="absolute top-6 left-4 h-auto w-24 rotate-[-10deg] sm:top-10 sm:left-8 sm:w-32 md:w-40 xl:left-10 xl:w-48" />
+              <Image src="/home/sticker2.png" alt="sticker" width={200} height={200} sizes="(max-width: 640px) 96px, (max-width: 1279px) 140px, 200px" className="absolute right-4 bottom-6 h-auto w-24 rotate-10 sm:right-8 sm:bottom-10 sm:w-32 md:w-40 xl:right-10 xl:w-48" />
             </div>
 
             {/* Panel 2 */}
             <div className="relative flex h-screen items-center justify-center">
-              <Image src="https://www.wearepointof.com/home/sticker3.png" alt="sticker" width={200} height={200} sizes="(max-width: 640px) 96px, (max-width: 1279px) 140px, 200px" className="absolute top-6 left-4 h-auto w-24 -rotate-6 sm:top-10 sm:left-16 sm:w-32 md:w-40 xl:left-28 xl:w-48" />
-              <Image src="https://www.wearepointof.com/home/sticker4.png" alt="sticker" width={200} height={200} sizes="(max-width: 640px) 96px, (max-width: 1279px) 140px, 200px" className="absolute right-4 bottom-6 h-auto w-24 rotate-[8deg] sm:right-8 sm:bottom-10 sm:w-32 md:w-40 xl:right-10 xl:w-48" />
+              <Image src="/home/sticker3.png" alt="sticker" width={200} height={200} sizes="(max-width: 640px) 96px, (max-width: 1279px) 140px, 200px" className="absolute top-6 left-4 h-auto w-24 -rotate-6 sm:top-10 sm:left-16 sm:w-32 md:w-40 xl:left-28 xl:w-48" />
+              <Image src="/home/sticker4.png" alt="sticker" width={200} height={200} sizes="(max-width: 640px) 96px, (max-width: 1279px) 140px, 200px" className="absolute right-4 bottom-6 h-auto w-24 rotate-[8deg] sm:right-8 sm:bottom-10 sm:w-32 md:w-40 xl:right-10 xl:w-48" />
             </div>
 
             {/* Panel 3 */}
             <div className="relative flex h-screen items-center justify-center">
-              <Image src="https://www.wearepointof.com/home/sticker5.png" alt="sticker" width={200} height={200} sizes="(max-width: 640px) 96px, (max-width: 1279px) 140px, 200px" className="absolute top-6 left-4 h-auto w-24 -rotate-12 sm:top-10 sm:left-8 sm:w-32 md:w-40 xl:left-10 xl:w-48" />
-              <Image src="https://www.wearepointof.com/home/sticker6.png" alt="sticker" width={200} height={200} sizes="(max-width: 640px) 96px, (max-width: 1279px) 140px, 200px" className="absolute right-4 bottom-6 h-auto w-24 rotate-12 sm:right-8 sm:bottom-10 sm:w-32 md:w-40 xl:right-10 xl:w-48" />
+              <Image src="/home/sticker5.png" alt="sticker" width={200} height={200} sizes="(max-width: 640px) 96px, (max-width: 1279px) 140px, 200px" className="absolute top-6 left-4 h-auto w-24 -rotate-12 sm:top-10 sm:left-8 sm:w-32 md:w-40 xl:left-10 xl:w-48" />
+              <Image src="/home/sticker6.png" alt="sticker" width={200} height={200} sizes="(max-width: 640px) 96px, (max-width: 1279px) 140px, 200px" className="absolute right-4 bottom-6 h-auto w-24 rotate-12 sm:right-8 sm:bottom-10 sm:w-32 md:w-40 xl:right-10 xl:w-48" />
             </div>
           </div>
         </div>
