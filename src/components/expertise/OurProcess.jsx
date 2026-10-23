@@ -669,6 +669,9 @@ const OurProcess = () => {
           {MOBILE_STEPS.map((step, i) => {
             // Bends alternate left/right starting on the left, so text alternates right/left
             const onRight = i % 2 === 0;
+            // First step: centre the heading (not the whole block) on the path start,
+            // so "Discovery" lines up with where the dot begins; the desc hangs below.
+            const anchorHeading = i === 0;
             return (
               <div
                 key={step.title}
@@ -679,7 +682,13 @@ const OurProcess = () => {
                 style={{ top: `${(MOBILE_PATH_Y[i] / MOBILE_VIEW_H) * 100}%`, opacity: 0.2 }}
               >
                 <h3 className="heading-md text-heading">{step.title}</h3>
-                <p className="para text-desc mt-2 md:mt-3">{step.desc}</p>
+                <p
+                  className={`para text-desc mt-2 md:mt-3 ${
+                    anchorHeading ? "absolute top-full left-0 right-0" : ""
+                  }`}
+                >
+                  {step.desc}
+                </p>
               </div>
             );
           })}

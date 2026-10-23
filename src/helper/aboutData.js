@@ -19,6 +19,29 @@ export const foundersData = [
     },
   ];
 
+export const teamImages = [
+  "Ashmita",
+  "deepangi",
+  "Dharshini",
+  "Divya Stellora",
+  "Gurnoor",
+  "Karan Katalyst",
+  "Khushboo",
+  "Lakshita",
+  "Muskan KAur",
+  "Muskan Nahata",
+  "Priyanka Singh",
+  "Sanika",
+  "Shaily",
+  "Shivangi",
+  "Shreya Jangid",
+  "shreya sachdeva",
+  "Suraj BD",
+  "Suvi",
+  "Tushna",
+  "Vansh Slayt",
+].map((name) => ({ name, image: encodeURI(`/Team/${name}.webp`) }));
+
 export const experienceData = [
     {
       title: "5+ Years in Business",

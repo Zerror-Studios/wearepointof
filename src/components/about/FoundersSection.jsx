@@ -11,7 +11,7 @@ import { IMAGE_PLACEHOLDER_BG } from "@/components/workDets/imagePlaceholder";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const FoundersSection = ({ data }) => {
+const FoundersSection = ({ data, team = [] }) => {
   const rootRef = useRef(null);
   const mediaRefs = useRef([]);
 
@@ -112,6 +112,31 @@ const FoundersSection = ({ data }) => {
           ))}
 
         </div>
+
+        {team.length > 0 && (
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 mt-20 sm:mt-24 md:mt-28">
+            {team.map((member, index) => (
+              <motion.div
+                key={member.name}
+                className={`w-full aspect-4/5 overflow-hidden ${IMAGE_PLACEHOLDER_BG}`}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, ease: "easeOut", delay: (index % 6) * 0.05 }}
+                viewport={{ once: true, amount: 0.2 }}
+              >
+                <Image
+                  width={400}
+                  height={500}
+                  // Already pre-compressed WebPs—skip Next's second re-encode
+                  unoptimized
+                  src={member.image}
+                  alt={member.name}
+                  className="w-full h-full object-cover object-top"
+                />
+              </motion.div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
