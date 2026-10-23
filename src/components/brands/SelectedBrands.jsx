@@ -80,24 +80,12 @@ const SelectedBrands = () => {
             ].join(" ")}
           >
             {/* Hover cover */}
-            <div
-              className="
-                absolute inset-0 flex items-center justify-center
-                opacity-0 brightness-[0.8] transition-all duration-300
-                group-hover:opacity-100
-              "
-            >
+            <div className="absolute inset-0 flex items-center justify-center opacity-0 brightness-[0.8] transition-all duration-300 group-hover:opacity-100">
               <h2 className="heading-md text-heading">{brand.name}</h2>
             </div>
 
             {/* Logo */}
-            <div
-              className="
-                flex h-full w-full items-center justify-center
-                transition-all duration-800
-                group-hover:opacity-0
-              "
-            >
+            <div className="flex h-full w-full items-center justify-center transition-all duration-800 group-hover:opacity-0">
               <Image
               width={100}
               height={100}

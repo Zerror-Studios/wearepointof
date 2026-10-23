@@ -19,27 +19,35 @@ export const foundersData = [
     },
   ];
 
+// Ordered for visual rhythm (not alphabetical): men, dark/light outfits and wider
+// full-body shots are spread so none sit side by side in the 2/3/6-column grids.
+// Trailing items that leave a partial row are hidden, so the last entry may not show.
 export const teamImages = [
-  "Ashmita",
-  "deepangi",
+  "Shaily",
+  "Vansh Slayt",
   "Dharshini",
-  "Divya Stellora",
-  "Gurnoor",
-  "Karan Katalyst",
+  "Ashmita",
+  "Muskan Nahata",
+  "Suraj BD",
+  "Himanshu",
+  "Tushna",
   "Khushboo",
   "Lakshita",
-  "Muskan KAur",
-  "Muskan Nahata",
-  "Priyanka Singh",
+  "Gurnoor",
   "Sanika",
-  "Shaily",
+  "Divya Stellora",
   "Shivangi",
-  "Shreya Jangid",
-  "shreya sachdeva",
-  "Suraj BD",
   "Suvi",
-  "Tushna",
-  "Vansh Slayt",
+  "Dhruti",
+  "shreya sachdeva",
+  "deepangi",
+  "Karan Katalyst",
+  "Muskan KAur",
+  "Priyanka Singh",
+  "Dhruti Gothi",
+  "Shreya Jangid",
+  "Divyansh",
+  "Hritika Malji",
 ].map((name) => ({ name, image: encodeURI(`/Team/${name}.webp`) }));
 
 export const experienceData = [

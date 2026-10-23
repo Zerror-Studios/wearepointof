@@ -41,16 +41,7 @@ const Overview = ({ caseStudy }) => {
   return (
     <section className="w-full">
       <div
-        className="
-          grid
-          grid-cols-1
-          sm:grid-cols-2
-          md:grid-cols-2
-          lg:grid-cols-4
-          gap-4 md:gap-6
-          md:auto-rows-[220px]
-          lg:auto-rows-[250px]
-        "
+        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 md:auto-rows-[220px] lg:auto-rows-[250px]"
       >
         {slots.map((src, index) => {
           const { grid, single } = gridClasses[index] ?? gridClasses[0];

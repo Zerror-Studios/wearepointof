@@ -11,6 +11,17 @@ import { IMAGE_PLACEHOLDER_BG } from "@/components/workDets/imagePlaceholder";
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Hide trailing photos that would leave a partial last row at each breakpoint
+// (grid is 2 / sm:3 / lg:6 columns). Class names are static so Tailwind picks them up.
+const teamVisibility = (index, total) => {
+  const fits = (cols) => index < total - (total % cols);
+  return [
+    fits(2) ? "block" : "hidden",
+    fits(3) ? "sm:block" : "sm:hidden",
+    fits(6) ? "lg:block" : "lg:hidden",
+  ].join(" ");
+};
+
 const FoundersSection = ({ data, team = [] }) => {
   const rootRef = useRef(null);
   const mediaRefs = useRef([]);
@@ -45,13 +56,7 @@ const FoundersSection = ({ data, team = [] }) => {
       {/* Container */}
       <div className="w-full  overflow-hidden">
         {/* Wrapper */}
-        <div
-          className="w-full 
-          px-6 sm:px-10 md:pl-12 xl:pl-48 2xl:pl-[30rem]
-          pr-6
-          pb-20 sm:pb-24 md:pb-28 lg:pb-32
-          "
-        >
+        <div className="w-full px-6 sm:px-10 md:pl-12 xl:pl-48 2xl:pl-[30rem] pr-6 pb-20 sm:pb-24 md:pb-28 lg:pb-32">
 
           <h2
             className="heading-xl text-subheading mb-6"
@@ -118,7 +123,7 @@ const FoundersSection = ({ data, team = [] }) => {
             {team.map((member, index) => (
               <motion.div
                 key={member.name}
-                className={`w-full aspect-4/5 overflow-hidden ${IMAGE_PLACEHOLDER_BG}`}
+                className={`w-full aspect-4/5 overflow-hidden ${IMAGE_PLACEHOLDER_BG} ${teamVisibility(index, team.length)}`}
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, ease: "easeOut", delay: (index % 6) * 0.05 }}

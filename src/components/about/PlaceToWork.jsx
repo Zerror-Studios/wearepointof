@@ -6,12 +6,7 @@ const PlaceToWork = () => {
   return (
     <div className="w-full  overflow-hidden">
       {/* Wrapper */}
-      <div
-        className="w-full 
-          px-6 sm:px-10 md:pl-12 xl:pl-48 2xl:pl-[30rem]
-          pr-6
-          py-20 sm:py-24 md:py-28 lg:py-32"
-      >
+      <div className="w-full px-6 sm:px-10 md:pl-12 xl:pl-48 2xl:pl-[30rem] pr-6 py-20 sm:py-24 md:py-28 lg:py-32">
         {/* Top Content */}
         <div className="max-w-[700px]">
           <h2 className="heading-lg text-subheading mb-6">
