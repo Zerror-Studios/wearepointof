@@ -121,7 +121,7 @@ const Experience = () => {
               <span className="text-white">Point Of was founded in 2019 by Piran Tarapore and Pearl Jain —</span> with a belief that design is most powerful when it starts with a question, not an answer.
             </p>
             <p className="para text-desc mt-4">
-              Born in Mumbai, grown across three continents. Years of building a consultancy that doesn't just create brands, it grows with them. From the first naming session to the hundredth campaign, we stay in the room.
+              Born in Mumbai, grown across five continents. Years of building a consultancy that doesn't just create brands, it grows with them. From the first naming session to the hundredth campaign, we stay in the room.
             </p>
           </div>
         </div>
@@ -159,7 +159,7 @@ const Experience = () => {
               <span className="text-white">Point Of was founded in 2019 by Piran Tarapore and Pearl Jain —</span> with a belief that design is most powerful when it starts with a question, not an answer.
             </p>
             <p className="para text-desc mt-4">
-              Born in Mumbai, grown across three continents. Years of building a consultancy that doesn't just create brands, it grows with them. From the first naming session to the hundredth campaign, we stay in the room.
+              Born in Mumbai, grown across five continents. Years of building a consultancy that doesn't just create brands, it grows with them. From the first naming session to the hundredth campaign, we stay in the room.
             </p>
           </div>
         </div>

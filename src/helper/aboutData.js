@@ -2,7 +2,7 @@ export const foundersData = [
     {
       name: "Piran Tarapore",
       role: "FOUNDER",
-      desc: "Piran builds bridges—between a brand's ambition and the market it is trying to reach, between people who should be in the same room but aren't, between the problem as presented and the one that actually needs solving.\n\nAt Point Of, he leads all things business, strategy, partnerships and growth. He has worked alongside over a hundred brands across industries—and is usually the first call a founder makes when something needs to shift.",
+      desc: "Piran builds bridges—between a brand's ambition and the market it is trying to reach, between people who should be in the same room but aren't, between the problem as presented and the one that actually needs solving.\n\nAt Point Of, he leads all things business, strategy, partnerships and growth. He has worked alongside 170+ brands across industries and five continents, and is usually the first call a founder makes when something needs to shift.",
       image: "/about/piran.png",
       objectPosition: "object-[50%_10%]",
       buttonText: "CONNECT",
@@ -50,27 +50,6 @@ export const teamImages = [
   "Hritika Malji",
 ].map((name) => ({ name, image: encodeURI(`/Team/${name}.webp`) }));
 
-export const experienceData = [
-    {
-      title: "5+ Years in Business",
-      desc: <>
-        Point Of was founded in 2019 by Piran Tarapore and Pearl Jain—with a belief that design is most powerful when it starts with a question, not an answer.
-        <br />
-        <br />
-        Born in Mumbai, grown across three continents, we've spent six years building a consultancy that doesn't just create brands—it grows with them. From the first naming session to the hundredth campaign, we stay in the room.
-  
-      </>,
-    },
-    {
-      title: "100% Independent",
-      desc: "Our independence gives us the freedom to think boldly, move fast, and stay true to our vision. We answer to ideas, not investors—shaping every project with agility, purpose, and a commitment to craft.",
-    },
-    {
-      title: "25+ Global Brand Partners",
-      desc: "We’re a team of thinkers and makers collaborating with partners across industries and time zones. United by a belief in the power of design, we shape ideas that connect, evolve, and leave a lasting mark—creating work that resonates across.",
-    },
-  ];
-  
 export const transformData = [
     {
       title: "Empower",

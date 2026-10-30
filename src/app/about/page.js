@@ -7,7 +7,7 @@ import OurValues from "@/components/about/OurValues";
 import CTASection from "@/components/home/CTASection";
 import StudioConsultancy from "@/components/about/StudioConsultancy";
 import OfficesSection from "@/components/about/OfficesSection";
-import { foundersData, teamImages, experienceData, cultureValues } from "@/helper/aboutData";
+import { foundersData, teamImages, cultureValues } from "@/helper/aboutData";
 
 export const metadata = {
   title: "About",
@@ -32,7 +32,7 @@ const Studio = () => {
         href="/brands"
         enableTextParallax={true}
       />
-      <Experience data={experienceData} />
+      <Experience />
       <StudioConsultancy />
       <FoundersSection data={foundersData} team={teamImages} />
       <OfficesSection />
