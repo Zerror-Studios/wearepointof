@@ -84,11 +84,11 @@ export const expertiseDetails = [
             },
             {
                 title: "Creative Direction & Production",
-                content: "Launching a brand is just the beginning. We create and execute strategies that establish your brand, drive awareness, and foster long-term growth. From defining your unique positioning to crafting riveting (place from compelling to this word) narratives, our team ensures your brand reaches the right audience and scales efficiently. Whether starting fresh or repositioning, we focus on building lasting brand equity.",
+                content: "Every brand needs a creative point of view that holds across every format. We set the direction and produce the work that carries it: shoots, films, campaigns and content, made to one standard.",
             },
             {
                 title: "Brand Launch & Growth",
-                content: "Launching a brand is just the beginning. We create and execute strategies that establish your brand, drive awareness, and foster long-term growth. From defining your unique positioning to crafting riveting (place from compelling to this word) narratives, our team ensures your brand reaches the right audience and scales efficiently. Whether starting fresh or repositioning, we focus on building lasting brand equity.",
+                content: "Launching a brand is just the beginning. We create and execute strategies that establish your brand, drive awareness, and foster long-term growth. From defining your unique positioning to crafting riveting narratives, our team ensures your brand reaches the right audience and scales efficiently. Whether starting fresh or repositioning, we focus on building lasting brand equity.",
             },
             {
                 title: "Social Media",
