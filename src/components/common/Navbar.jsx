@@ -312,7 +312,8 @@ export default function Navbar() {
   }, []);
 
   const isHome = pathname === "/";
-  const gradientEnabled = pathname !== "/work" && showNavGradient;
+  // /universe has its own fixed sidebar under the nav; a top fade would dim it
+  const gradientEnabled = pathname !== "/work" && pathname !== "/universe" && showNavGradient;
 
   return (
     <>
