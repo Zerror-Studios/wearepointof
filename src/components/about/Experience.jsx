@@ -12,19 +12,13 @@ const HOLD = 0.35;
 
 const Experience = () => {
   const sectionRef = useRef(null);
-  const tickerRef = useRef(null);
-  const lineRef = useRef(null);
-  const yearDesktopRef = useRef(null);
-  const yearMobileRef = useRef(null);
-  const copyMobileRef = useRef(null);
-  const copyDesktopRef = useRef(null);
+  const yearRef = useRef(null);
+  const copyRef = useRef(null);
 
   useEffect(() => {
-    const years = () => [yearDesktopRef.current, yearMobileRef.current].filter(Boolean);
-
     const ctx = gsap.context(() => {
       gsap.fromTo(
-        [copyMobileRef.current, copyDesktopRef.current].filter(Boolean),
+        copyRef.current,
         { opacity: 0, y: 16 },
         {
           opacity: 1,
@@ -38,52 +32,20 @@ const Experience = () => {
         }
       );
 
-      gsap.fromTo(
-        lineRef.current,
-        { clipPath: "polygon(0 0, 100% 0, 100% 0, 0 0)" },
-        {
-          clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
-          duration: 1.5,
-          ease: "power2.inOut",
-          scrollTrigger: {
-            trigger: tickerRef.current,
-            start: "top 90%",
-            end: "top 30%",
-            scrub: 0.3,
-          },
-        }
-      );
-
-      gsap.fromTo(years(),
-        { opacity: 0.6 },
-        {
-          opacity: 1,
-          ease: "none",
-          scrollTrigger: {
-            trigger: tickerRef.current,
-            start: "top 90%",
-            end: "top 30%",
-            scrub: true,
-          },
-        }
-      );
-
+      // Year label counts 2019 → 2026 as the section scrolls into view
       ScrollTrigger.create({
-        trigger: tickerRef.current,
+        trigger: sectionRef.current,
         start: "top 90%",
         end: "top 30%",
         scrub: true,
         onUpdate: (self) => {
           const steps = END_YEAR - START_YEAR;
           const t = (self.progress - HOLD) / (1 - HOLD);
-          const value = String(
-            t <= 0
-              ? START_YEAR
-              : START_YEAR + Math.min(steps, Math.floor(t * steps) + 1)
-          );
-          years().forEach((el) => {
-            el.textContent = value;
-          });
+          if (yearRef.current) {
+            yearRef.current.textContent = String(
+              t <= 0 ? START_YEAR : START_YEAR + Math.min(steps, Math.floor(t * steps) + 1)
+            );
+          }
         },
       });
     }, sectionRef);
@@ -91,84 +53,27 @@ const Experience = () => {
     return () => ctx.revert();
   }, []);
 
-  const yearStyle = {
-    color: "rgba(255,255,255,0.2)",
-    letterSpacing: "-0.04em",
-    lineHeight: 0.68,
-  };
-
   return (
-    <div ref={sectionRef} className="relative w-full">
-      <div className="w-full px-6 sm:px-10 md:px-12 xl:pl-80 2xl:pl-120 xl:pr-6 py-16 sm:py-20 md:py-28 lg:py-32">
-        <div ref={tickerRef}>
-
-        {/* Mobile */}
-        <div className="flex flex-col space-y-6 min-[700px]:hidden">
-          <span
-            ref={yearMobileRef}
-            className="font-bold leading-none tracking-tight select-none tabular-nums"
-            style={{
-              ...yearStyle,
-              fontSize: "clamp(56px, 15vw, 96px)",
-              lineHeight: 1,
-            }}
-          >
+    <section ref={sectionRef} className="w-full px-6 sm:px-10 md:px-12 lg:px-14 xl:px-20 py-16 sm:py-20 md:py-28 lg:py-36">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-x-6">
+        <div className="md:col-span-5 flex items-center gap-3 md:items-start md:pt-1.5">
+          <span className="w-1.5 h-1.5 rounded-full bg-heading shrink-0" />
+          <span ref={yearRef} className="para-acc text-heading tabular-nums leading-none">
             {START_YEAR}
           </span>
-          <div className="h-px w-full bg-white/20" />
-          <div ref={copyMobileRef} className="max-w-[560px]" style={{ opacity: 0 }}>
-            <p className="para text-desc">
-              <span className="text-white">Piran Tarapore founded the studio in 2019 as Savoir,</span> with a belief that design is most powerful when it starts with a question, not an answer. In 2024 it became Point Of, and Pearl Jain joined as co-founder.
-            </p>
-            <p className="para text-desc mt-4">
-              Born in Mumbai, grown across five continents. Years of building a consultancy that doesn't just create brands, it grows with them. From the first naming session to the hundredth campaign, we stay in the room.
-            </p>
-          </div>
         </div>
 
-        {/* Tablet: year | line | text in one row at full width.
-            Desktop (xl): year + line hang in the left gutter beside the text. */}
-        <div className="relative hidden min-[700px]:flex xl:block">
-          <div className="flex flex-row items-stretch shrink-0 pr-6 lg:pr-10 xl:absolute xl:inset-y-0 xl:right-full xl:h-full">
-            <div className="flex flex-col items-end pr-4 lg:pr-6">
-              <span
-                ref={yearDesktopRef}
-                className="font-bold leading-none tracking-tight select-none tabular-nums"
-                style={{
-                  ...yearStyle,
-                  fontSize: "clamp(48px, 7vw, 96px)",
-                }}
-              >
-                {START_YEAR}
-              </span>
-            </div>
-            <div className="relative w-px h-full self-stretch shrink-0">
-              <div className="absolute inset-0" />
-              <div
-                ref={lineRef}
-                style={{ clipPath: "polygon(0 0, 100% 0, 100% 0, 0 0)" }}
-                className="absolute inset-0 z-30 bg-linear-to-b from-transparent to-foreground"
-              >
-                <span className="w-[3px] h-[3px] bg-foreground rounded-full absolute bottom-0 left-1/2 -translate-x-1/2" />
-              </div>
-            </div>
-          </div>
-
-          <div ref={copyDesktopRef} className="min-w-0 flex-1 xl:max-w-[560px]" style={{ opacity: 0 }}>
-            <p className="para text-desc">
-              <span className="text-white">Piran Tarapore founded the studio in 2019 as Savoir,</span> with a belief that design is most powerful when it starts with a question, not an answer. In 2024 it became Point Of, and Pearl Jain joined as co-founder.
-            </p>
-            <p className="para text-desc mt-4">
-              Born in Mumbai, grown across five continents. Years of building a consultancy that doesn't just create brands, it grows with them. From the first naming session to the hundredth campaign, we stay in the room.
-            </p>
-          </div>
-        </div>
-
+        <div ref={copyRef} className="md:col-span-7 max-w-[720px]" style={{ opacity: 0 }}>
+          <p className="para text-desc">
+            <span className="text-heading">Piran Tarapore founded the studio in 2019 as Savoir,</span> with a belief that design is most powerful when it starts with a question, not an answer. In 2024 it became Point Of, and Pearl Jain joined as co-founder.
+          </p>
+          <p className="para text-desc mt-6 md:mt-10">
+            Born in Mumbai, grown across five continents. Years of building a consultancy that doesn't just create brands, it grows with them. From the first naming session to the hundredth campaign, we stay in the room.
+          </p>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
-
 
 export default Experience;

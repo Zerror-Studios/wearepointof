@@ -1,12 +1,12 @@
 import React from "react";
 import Experience from "@/components/about/Experience";
 import FoundersSection from "@/components/about/FoundersSection";
-import GridSection from "@/components/about/GridSection";
 import HeroSection from "@/components/about/HeroSection";
 import OurValues from "@/components/about/OurValues";
 import CTASection from "@/components/home/CTASection";
 import StudioConsultancy from "@/components/about/StudioConsultancy";
 import OfficesSection from "@/components/about/OfficesSection";
+import CultureCarousel from "@/components/about/CultureCarousel";
 import { foundersData, teamImages, cultureValues } from "@/helper/aboutData";
 
 export const metadata = {
@@ -34,10 +34,10 @@ const Studio = () => {
       />
       <Experience />
       <StudioConsultancy />
-      <FoundersSection data={foundersData} team={teamImages} />
       <OfficesSection />
+      <FoundersSection data={foundersData} team={teamImages} />
       <OurValues />
-      <GridSection
+      <CultureCarousel
         title={
           <>
             Driven by Design. <br /> Defined by Culture.

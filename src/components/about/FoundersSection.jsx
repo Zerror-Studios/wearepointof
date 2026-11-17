@@ -52,74 +52,66 @@ const FoundersSection = ({ data, team = [] }) => {
   }, []);
 
   return (
-    <div ref={rootRef} className="w-full  py-16 sm:py-20 md:py-28 lg:py-32">
-      {/* Container */}
-      <div className="w-full  overflow-hidden">
-        {/* Wrapper */}
-        <div className="w-full px-6 sm:px-10 md:pl-12 xl:pl-48 2xl:pl-[30rem] pr-6 pb-20 sm:pb-24 md:pb-28 lg:pb-32">
-
-          <h2
-            className="heading-xl text-subheading mb-6"
-          >
-            Two minds. One vision
-          </h2>
-
-          <p className="heading-lg text-desc max-w-[900px]">Point Of was built by two people who see the same problem differently. Which is exactly why it works.</p>
-        </div>
+    <section ref={rootRef} className="w-full px-6 sm:px-10 md:px-12 lg:px-14 xl:px-20 py-16 sm:py-20 md:py-28 lg:py-32">
+      {/* Header: heading left, intro right */}
+      <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-5 md:gap-12 mb-14 sm:mb-16 md:mb-24 lg:mb-32">
+        <h2 className="heading-xl text-heading">Two minds. One vision</h2>
+        <p className="para text-subheading leading-[1.35] md:max-w-[340px] lg:max-w-[440px] xl:max-w-[31vw] md:pt-2">
+          Point Of was built by two people who see the same problem differently. Which is exactly why it works.
+        </p>
       </div>
-      <div className="max-w-[1350px] mx-auto px-6 sm:px-10 md:px-14">
-        <div className="flex flex-col md:flex-row md:justify-between gap-16 md:gap-12 lg:gap-24">
 
-          {data.map((item, index) => (
-            <div
-              key={index}
-              className="w-full max-w-[520px] mx-auto md:mx-0"
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-4">
+        {data.map((item, index) => (
+          <div key={index} className="w-full">
+            <motion.div
+              className={`w-full aspect-square overflow-hidden mb-8 md:mb-10 ${IMAGE_PLACEHOLDER_BG}`}
+              initial={{ opacity: 0, scale: 0.96 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              viewport={{ once: true, amount: 0.35 }}
             >
-              <motion.div
-                className={`w-full aspect-square overflow-hidden mb-8 ${IMAGE_PLACEHOLDER_BG}`}
-                initial={{ opacity: 0, scale: 0.96 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.2, ease: "easeOut" }}
-                viewport={{ once: true, amount: 0.35 }}
+              <div
+                ref={(el) => { mediaRefs.current[index] = el; }}
+                className="w-full h-full will-change-transform"
               >
-                <div
-                  ref={(el) => { mediaRefs.current[index] = el; }}
-                  className="w-full h-full will-change-transform"
-                >
-                  <Image
-                    width={1000}
-                    height={1000}
-                    src={item.image}
-                    alt={item.name}
-                    className={`w-full h-full object-cover ${item.objectPosition}`}
-                  />
-                </div>
-              </motion.div>
-
-              <h3 className="heading-lg font-light! text-subheading mb-3">
-                {item.name}
-              </h3>
-
-              <p className="text-xs sm:text-sm uppercase tracking-[1px] heading-lg font-medium! text-subheading mb-4">
-                {item.role}
-              </p>
-
-              <div className="para text-desc space-y-4">
-                {String(item.desc ?? "")
-                  .split(/\n\s*\n/)
-                  .map((para, i) => (
-                    <p key={i}>{para}</p>
-                  ))}
+                <Image
+                  width={1000}
+                  height={1000}
+                  src={item.image}
+                  alt={item.name}
+                  className={`w-full h-full object-cover ${item.objectPosition}`}
+                />
               </div>
+            </motion.div>
 
-              <ArrowButton title={item.buttonText || "CONNECT"} link={item.link} />
+            <h3 className="heading-lg font-light! text-heading mb-3 md:mb-4">
+              {item.name}
+            </h3>
+
+            <p className="para-acc uppercase tracking-[0.5px] font-medium text-subheading mb-6 md:mb-8">
+              {item.role}
+            </p>
+
+            <div className="para-acc leading-[1.8] text-desc space-y-4 md:pr-6 lg:pr-10">
+              {String(item.desc ?? "")
+                .split(/\n\s*\n/)
+                .map((para, i) => (
+                  <p key={i}>{para}</p>
+                ))}
             </div>
-          ))}
 
-        </div>
+            <ArrowButton title={item.buttonText || "CONNECT"} link={item.link} />
+          </div>
+        ))}
+      </div>
 
-        {team.length > 0 && (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 mt-20 sm:mt-24 md:mt-28">
+      {team.length > 0 && (
+        <div className="mt-28 sm:mt-32 md:mt-40 lg:mt-56">
+          <h2 className="heading-lg text-heading mb-12 sm:mb-16 md:mb-24 lg:mb-28">
+            Many minds. One point of view.
+          </h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 lg:gap-6">
             {team.map((member, index) => (
               <motion.div
                 key={member.name}
@@ -141,9 +133,9 @@ const FoundersSection = ({ data, team = [] }) => {
               </motion.div>
             ))}
           </div>
-        )}
-      </div>
-    </div>
+        </div>
+      )}
+    </section>
   );
 };
 
