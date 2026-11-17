@@ -11,7 +11,7 @@ export const universeGroups = [
   {
     title: "Brand Strategy",
     items: [
-      { id: "universe-and-core", n: "05", label: "Universe & Core", ready: false },
+      { id: "universe-and-core", n: "05", label: "Universe & Core", ready: true },
       { id: "positioning-and-audience", n: "06", label: "Positioning & Audience", ready: false },
       { id: "personality-and-voice", n: "07", label: "Personality & Voice", ready: false },
     ],

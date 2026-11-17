@@ -3,17 +3,12 @@ import React, { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import UniverseSidebar from "./UniverseSidebar";
 import { CoverSlide, ManifestoSlide, WhatIsABrandSlide, ImmersionsSlide } from "./UniverseSlides";
+import BrandStrategySlide from "./BrandStrategySlide";
 import { universeSlides } from "@/helper/universeData";
+import { scrollToId } from "@/helper/universeScroll";
 
 const TOTAL = universeSlides.length;
 const readyIds = universeSlides.filter((s) => s.ready).map((s) => s.id);
-
-const scrollToId = (id) => {
-  const el = document.getElementById(id);
-  if (!el) return;
-  if (window.__lenis) window.__lenis.scrollTo(el, { duration: 1.4 });
-  else el.scrollIntoView({ behavior: "smooth" });
-};
 
 const UniverseShell = () => {
   const [activeId, setActiveId] = useState(readyIds[0]);
@@ -90,6 +85,7 @@ const UniverseShell = () => {
         <ManifestoSlide />
         <WhatIsABrandSlide />
         <ImmersionsSlide />
+        <BrandStrategySlide onNavigate={navigate} />
       </main>
 
       {/* Slide counter */}
