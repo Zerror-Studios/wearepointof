@@ -163,23 +163,48 @@ export const PositioningSlide = ({ onNavigate }) => (
       />
     </div>
 
-    {/* Positioning: concentric contour rings */}
-    <motion.div
+    {/* Brand positioning over concentric contour rings. On md+ the copy is placed on the
+        rings as in the design (heading inside the inner ring); phones stack it in flow. */}
+    <div
       id="brand-positioning"
-      className="relative -mx-6 md:mx-0 mt-6 md:-mt-[3.8cqw] h-[109.9cqw] overflow-hidden"
-      initial={{ opacity: 0, scale: 0.97 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 1.6, ease: "easeOut" }}
-      viewport={{ once: true, amount: 0.25 }}
+      className="relative -mx-6 md:mx-0 mt-6 md:-mt-[3.8cqw] px-6 md:px-0 py-24 md:py-0 md:h-[109.9cqw] overflow-hidden"
     >
-      <img
+      <motion.img
         src="/universe/positioning-rings.webp"
         alt=""
         aria-hidden="true"
         decoding="async"
         className="absolute inset-0 w-full h-full object-cover object-left"
+        initial={{ opacity: 0, scale: 0.97 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1.6, ease: "easeOut" }}
+        viewport={{ once: true, amount: 0.25 }}
       />
-    </motion.div>
+
+      <div className="relative md:absolute md:inset-x-0 md:top-[38.25cqw] md:flex">
+        <motion.h3 className={`${heading} md:leading-[1.2] md:ml-[8.67cqw] md:w-[38.3cqw] shrink-0`} {...fadeUp}>
+          Brand
+          <br />
+          Positioning
+        </motion.h3>
+        <motion.p className={`${body} mt-8 md:mt-[0.3cqw] md:w-[44.4cqw]`} {...fadeUp}>
+          Point Of is a Mumbai-headquartered brand consultancy working with founders and enterprises around the world.
+          Our practice covers strategy, design and technology, with marketing as the natural extension of the brand once
+          it’s live.
+          <br />
+          Strategy comes first, always.
+        </motion.p>
+      </div>
+
+      <motion.p
+        className={`${body} relative mt-10 md:mt-0 md:absolute md:top-[72.8cqw] md:left-[26.45cqw] md:w-[47cqw]`}
+        {...fadeUp}
+      >
+        <span className="text-[#E8E8E1]">We’re built for businesses that take brand seriously.</span> Most of our clients
+        are at an inflection point: launching, scaling, repositioning, expanding into new markets, or merging. They come to
+        us because the brand has to do real work, and they want a partner who builds it that way.
+      </motion.p>
+    </div>
 
     {/* Primary audience */}
     <div id="primary-audience" className="relative mt-16 md:mt-[10.15cqw]">
