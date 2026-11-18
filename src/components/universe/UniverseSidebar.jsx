@@ -1,7 +1,8 @@
 "use client";
 import React, { useState } from "react";
+import Link from "next/link";
 import { saturn, chevron } from "@/helper/universeArt";
-import { universeIntro, universeGroups } from "@/helper/universeData";
+import { universeIntro, universeGroups, slideHref } from "@/helper/universeData";
 
 const SaturnIcon = () => (
   <svg viewBox="23 33 32 20" className="w-[31px] h-[19px] shrink-0" fill="#E8E8E0" aria-hidden="true">
@@ -23,21 +24,26 @@ const Chevron = ({ open }) => (
   </svg>
 );
 
+// Real links (open in new tab etc. still work); a plain click goes through onNavigate so
+// sections on the current page smooth-scroll instead of reloading.
 const NavItem = ({ item, active, onNavigate }) => (
   <li>
-    <button
-      type="button"
-      onClick={() => item.ready && onNavigate(item.id)}
-      aria-current={active ? "true" : undefined}
-      aria-disabled={!item.ready || undefined}
-      title={item.ready ? undefined : "Coming soon"}
+    <Link
+      href={slideHref(item.id)}
+      scroll={false}
+      onClick={(e) => {
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+        e.preventDefault();
+        onNavigate(item.id);
+      }}
+      aria-current={active ? "page" : undefined}
       className={`w-full h-[47px] flex items-center gap-[1ch] pl-[25px] pr-4 text-left text-[15px] tracking-[0.2px] text-[#E8E8E1] transition-colors duration-300 ${
-        active ? "bg-[#2a2a2a]" : item.ready ? "hover:bg-white/5 cursor-pointer" : "cursor-default"
+        active ? "bg-[#2a2a2a]" : "hover:bg-white/5"
       }`}
     >
       <span>{item.n}</span>
       <span className="truncate">{item.label}</span>
-    </button>
+    </Link>
   </li>
 );
 

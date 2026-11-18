@@ -1,7 +1,8 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import { fadeUp, heading, SectionIndex } from "./shared";
+import Image from "next/image";
+import { fadeUp, heading, SectionIndex, MotionImage, COLUMN_SIZES } from "./shared";
 
 /*
   10 Visual Language: a gallery of the brand's gradients, grains, line work, circular
@@ -20,8 +21,9 @@ const index = [
 
 const gradients = Array.from({ length: 13 }, (_, i) => `${V}/gradient-${i + 1}.webp`);
 
-/* A gallery image that fades up as it enters, with a slow zoom on hover */
-const Tile = ({ src, className = "", ratio, i = 0 }) => (
+/* A gallery image that fades up as it enters, with a slow zoom on hover.
+   size = intrinsic [width, height] of the exported file; sizes = its rendered width. */
+const Tile = ({ src, className = "", size, sizes, i = 0 }) => (
   <motion.div
     className={`group overflow-hidden ${className}`}
     initial={{ opacity: 0, y: 24 }}
@@ -29,26 +31,26 @@ const Tile = ({ src, className = "", ratio, i = 0 }) => (
     transition={{ duration: 0.8, ease: "easeOut", delay: (i % 5) * 0.06 }}
     viewport={{ once: true, amount: 0.25 }}
   >
-    <img
+    <Image
       src={src}
       alt=""
-      decoding="async"
-      loading="lazy"
+      width={size[0]}
+      height={size[1]}
+      sizes={sizes}
       className="block w-full h-auto transition-transform duration-[1400ms] ease-out group-hover:scale-[1.04]"
-      style={{ aspectRatio: ratio }}
     />
   </motion.div>
 );
 
-const Art = ({ src, ratio, className = "" }) => (
-  <motion.img
+const Art = ({ src, size, className = "" }) => (
+  <MotionImage
     src={src}
     alt=""
     aria-hidden="true"
-    decoding="async"
-    loading="lazy"
+    width={size[0]}
+    height={size[1]}
+    sizes={COLUMN_SIZES}
     className={`block w-full h-auto ${className}`}
-    style={{ aspectRatio: ratio }}
     initial={{ opacity: 0 }}
     whileInView={{ opacity: 1 }}
     transition={{ duration: 1.4, ease: "easeOut" }}
@@ -57,7 +59,7 @@ const Art = ({ src, ratio, className = "" }) => (
 );
 
 const VisualLanguageSlide = ({ onNavigate }) => (
-  <section id="visual-language" className="relative w-full px-6 md:px-0 pt-28 md:pt-[16.8cqw] pb-28 md:pb-[34.7cqw]">
+  <section id="visual-language" className="relative w-full px-6 md:px-0 pt-28 md:pt-[16.8cqw] pb-24 md:pb-[17cqw]">
     <SectionIndex
       title={
         <>
@@ -79,7 +81,7 @@ const VisualLanguageSlide = ({ onNavigate }) => (
       </motion.h3>
       <div className="mt-10 md:mt-[7cqw] grid grid-cols-3 sm:grid-cols-5 gap-3 md:gap-x-[3.12cqw] md:gap-y-[9.19cqw]">
         {gradients.map((src, i) => (
-          <Tile key={src} src={src} ratio="162 / 226" i={i} className={i === 10 ? "sm:col-start-2" : ""} />
+          <Tile key={src} src={src} size={[324, 452]} sizes="(min-width: 640px) 15vw, 33vw" i={i} className={i === 10 ? "sm:col-start-2" : ""} />
         ))}
       </div>
     </div>
@@ -90,11 +92,11 @@ const VisualLanguageSlide = ({ onNavigate }) => (
         Grains
       </motion.h3>
       <div className="mt-10 md:mt-[7cqw] md:ml-[13.88cqw] md:w-[72.3cqw] space-y-4 md:space-y-[9.2cqw]">
-        <Tile src={`${V}/grain-1.webp`} ratio="834 / 476" />
-        <Tile src={`${V}/grain-2.webp`} ratio="834 / 476" />
+        <Tile src={`${V}/grain-1.webp`} size={[1251, 714]} sizes="(min-width: 768px) 72vw, 100vw" />
+        <Tile src={`${V}/grain-2.webp`} size={[1251, 714]} sizes="(min-width: 768px) 72vw, 100vw" />
         <div className="grid grid-cols-3 gap-3 md:gap-[2.34cqw]">
           {[3, 4, 5].map((n, i) => (
-            <Tile key={n} src={`${V}/grain-${n}.webp`} ratio="260 / 462" i={i} />
+            <Tile key={n} src={`${V}/grain-${n}.webp`} size={[390, 693]} sizes="(min-width: 768px) 23vw, 33vw" i={i} />
           ))}
         </div>
       </div>
@@ -105,7 +107,7 @@ const VisualLanguageSlide = ({ onNavigate }) => (
       <motion.h3 className={`${heading} md:ml-[8.67cqw]`} {...fadeUp}>
         Lines
       </motion.h3>
-      <Art src={`${V}/lines.webp`} ratio="1153 / 1640" className="-mx-6 w-[calc(100%+48px)] md:mx-0 md:w-full mt-6 md:mt-[4.4cqw]" />
+      <Art src={`${V}/lines.webp`} size={[1730, 2460]} className="-mx-6 w-[calc(100%+48px)] md:mx-0 md:w-full mt-6 md:mt-[4.4cqw]" />
     </div>
 
     {/* Circular motion */}
@@ -115,7 +117,7 @@ const VisualLanguageSlide = ({ onNavigate }) => (
       </motion.h3>
       <Art
         src={`${V}/circular-motion.webp`}
-        ratio="1153 / 580"
+        size={[1730, 870]}
         className="-mx-6 w-[calc(100%+48px)] md:mx-0 md:w-full mt-8 md:mt-[9.4cqw]"
       />
     </div>
@@ -126,10 +128,10 @@ const VisualLanguageSlide = ({ onNavigate }) => (
         Glass &amp; Holographic Effects
       </motion.h3>
       <div className="mt-10 md:mt-[7.5cqw] grid grid-cols-2 gap-3 md:gap-[4.34cqw]">
-        <Tile src={`${V}/glass-1.webp`} ratio="452 / 803" />
-        <Tile src={`${V}/glass-2.webp`} ratio="452 / 803" i={1} />
+        <Tile src={`${V}/glass-1.webp`} size={[678, 1205]} sizes="(min-width: 768px) 40vw, 50vw" />
+        <Tile src={`${V}/glass-2.webp`} size={[678, 1205]} sizes="(min-width: 768px) 40vw, 50vw" i={1} />
       </div>
-      <Tile src={`${V}/glass-3.webp`} ratio="954 / 536" className="mt-3 md:mt-[9.2cqw]" />
+      <Tile src={`${V}/glass-3.webp`} size={[1431, 804]} sizes="(min-width: 768px) 83vw, 100vw" className="mt-3 md:mt-[9.2cqw]" />
     </div>
   </section>
 );

@@ -1,7 +1,8 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import { fadeUp, heading, SectionIndex } from "./shared";
+import Image from "next/image";
+import { fadeUp, heading, SectionIndex, COLUMN_SIZES } from "./shared";
 
 /*
   09 Colour & Typography. Swatches and type specimens are live HTML (the brand fonts
@@ -85,7 +86,7 @@ const LargeSwatch = ({ s, i }) => (
     viewport={{ once: true, amount: 0.3 }}
   >
     <span className={`${swatchName} text-[24px] md:text-[2.69cqw]`}>{s.name}</span>
-    <span className={`flex ${s.hex.length > 1 ? "justify-between" : "justify-end"} ${hexText} text-[15px] md:text-[1.73cqw]`}>
+    <span className={`flex ${s.hex.length > 1 ? "justify-between" : "justify-end"} ${hexText} text-[15px] md:text-[clamp(13px,1.73cqw,28px)]`}>
       {s.hex.map((h) => (
         <span key={h}>{h}</span>
       ))}
@@ -107,7 +108,7 @@ const SmallSwatch = ({ s, i }) => (
       <br />
       {s.name[1]}
     </span>
-    <span className={`${hexText} self-end text-[13px] md:text-[1.39cqw]`}>{s.hex}</span>
+    <span className={`${hexText} self-end text-[13px] md:text-[clamp(12px,1.39cqw,22px)]`}>{s.hex}</span>
   </motion.div>
 );
 
@@ -120,13 +121,13 @@ const SecondarySwatch = ({ s, i }) => (
     style={{ color: s.ink }}
   >
     <div className="h-[200px] md:h-[34.26cqw] px-1.5 pt-2 md:px-[0.55cqw] md:pt-[0.87cqw]" style={{ background: s.hex }}>
-      <p className={`${swatchName} text-[13px] md:text-[1.21cqw]`}>{s.name}</p>
-      <p className="font-heading font-light text-[10px] md:text-[0.95cqw] mt-0.5">{s.hex}</p>
+      <p className={`${swatchName} text-[13px] md:text-[clamp(12px,1.21cqw,20px)]`}>{s.name}</p>
+      <p className="font-heading font-light text-[11px] md:text-[clamp(11px,0.95cqw,16px)] mt-0.5">{s.hex}</p>
     </div>
     {tints.map((t) => (
       <div
         key={t}
-        className="relative h-[28px] md:h-[3.04cqw] flex items-center px-1.5 md:px-[0.6cqw] font-heading font-light text-[10px] md:text-[0.95cqw]"
+        className="relative h-[28px] md:h-[3.04cqw] flex items-center px-1.5 md:px-[0.6cqw] font-heading font-light text-[11px] md:text-[clamp(11px,0.95cqw,16px)]"
       >
         <span className="absolute inset-0" style={{ background: s.hex, opacity: t }} />
         <span className="relative opacity-80">{Math.round(t * 100)}%</span>
@@ -231,13 +232,15 @@ const TypeSpecimen = ({ face }) => (
 /* ----------------------------------- Slide ------------------------------------ */
 
 const ColourTypographySlide = ({ onNavigate }) => (
-  <section id="colour-and-typography" className="relative w-full px-6 md:px-0 pt-28 md:pt-[16.65cqw] pb-28 md:pb-[34.7cqw]">
+  <section id="colour-and-typography" className="relative w-full px-6 md:px-0 pt-28 md:pt-[16.65cqw] pb-24 md:pb-[17cqw]">
     {/* Fine swirl behind the title + index */}
-    <img
+    <Image
       src="/universe/colour-swirl.webp"
       alt=""
       aria-hidden="true"
-      decoding="async"
+      width={1153}
+      height={1100}
+      sizes={COLUMN_SIZES}
       className="pointer-events-none absolute left-0 top-0 w-full h-[700px] md:h-[95.4cqw] object-cover object-top"
       style={{ maskImage: "linear-gradient(to bottom, #000 80%, transparent)", WebkitMaskImage: "linear-gradient(to bottom, #000 80%, transparent)" }}
     />

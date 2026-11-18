@@ -1,7 +1,8 @@
 "use client";
 import React from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
-import { fadeUp, heading, body, subheading, SectionIndex } from "./shared";
+import { fadeUp, heading, body, subheading, SectionIndex, MotionImage, COLUMN_SIZES } from "./shared";
 
 /*
   06 Positioning & Audience + 07 Personality & Voice. The design runs them as one
@@ -69,7 +70,14 @@ const AudienceCard = ({ item, i }) => (
     viewport={{ once: true, amount: 0.3 }}
   >
     <div className="overflow-hidden">
-      <img src={item.image} alt="" decoding="async" className="block w-full aspect-[260/309] object-cover" />
+      <Image
+        src={item.image}
+        alt=""
+        width={520}
+        height={618}
+        sizes="(min-width: 768px) 23vw, 320px"
+        className="block w-full aspect-[260/309] object-cover"
+      />
     </div>
     <h4 className={`${subheading} text-[#E8E8E1]/80 mt-6 md:mt-[3.1cqw] md:max-w-[21.5cqw]`}>{item.title}</h4>
     <p className={`${body} text-[#E8E8E1]/80! mt-4 md:mt-auto md:pt-[3cqw] md:max-w-[21.2cqw] md:text-[clamp(12px,1.39cqw,23px)] md:leading-[1.83]`}>
@@ -115,7 +123,7 @@ const VoiceCircle = ({ c, i }) => (
       />
     </motion.svg>
     <motion.span
-      className="relative font-heading font-light text-[#E8E8E1]/80 text-[clamp(10px,1.56cqw,26px)]"
+      className="relative font-heading font-light text-[#E8E8E1]/80 text-[clamp(11px,1.56cqw,26px)]"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ duration: 0.8, ease: "easeOut", delay: 0.5 + i * 0.15 }}
@@ -146,7 +154,7 @@ const VoiceRow = ({ rule, i }) => (
 /* ----------------------------------- Slides ----------------------------------- */
 
 export const PositioningSlide = ({ onNavigate }) => (
-  <section id="positioning-and-audience" className="relative w-full px-6 md:px-0 pt-28 md:pt-[17.2cqw]">
+  <section id="positioning-and-audience" className="relative w-full px-6 md:px-0 pt-28 md:pt-[17.2cqw] pb-24 md:pb-[17cqw]">
     <div className="relative z-10">
       <SectionIndex
         title={
@@ -169,11 +177,13 @@ export const PositioningSlide = ({ onNavigate }) => (
       id="brand-positioning"
       className="relative -mx-6 md:mx-0 mt-6 md:-mt-[3.8cqw] px-6 md:px-0 py-24 md:py-0 md:h-[109.9cqw] overflow-hidden"
     >
-      <motion.img
+      <MotionImage
         src="/universe/positioning-rings.webp"
         alt=""
         aria-hidden="true"
-        decoding="async"
+        width={1153}
+        height={1267}
+        sizes={COLUMN_SIZES}
         className="absolute inset-0 w-full h-full object-cover object-left"
         initial={{ opacity: 0, scale: 0.97 }}
         whileInView={{ opacity: 1, scale: 1 }}
@@ -221,7 +231,7 @@ export const PositioningSlide = ({ onNavigate }) => (
 );
 
 export const VoiceSlide = () => (
-  <section id="personality-and-voice" className="relative w-full px-6 md:px-0 pt-28 md:pt-[35cqw] pb-28 md:pb-[34.7cqw]">
+  <section id="personality-and-voice" className="relative w-full px-6 md:px-0 pt-28 md:pt-[17.2cqw] pb-24 md:pb-[17cqw]">
     <motion.h3 className={`${heading} md:ml-[8.67cqw]`} {...fadeUp}>
       Brand Voice &amp; Tone
     </motion.h3>

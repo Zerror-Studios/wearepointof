@@ -1,7 +1,8 @@
 "use client";
 import React from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
-import { fadeUp, heading, body, ArrowRight, SectionIndex } from "./shared";
+import { fadeUp, heading, body, ArrowRight, SectionIndex, MotionImage, COLUMN_SIZES } from "./shared";
 
 /*
   Brand Identity intro + 08 Identity Design. The logo diagrams are exported from the
@@ -59,10 +60,12 @@ const IdentityCard = ({ card, i, onNavigate }) => (
     transition={{ duration: 0.8, ease: "easeOut", delay: i * 0.08 }}
     viewport={{ once: true, amount: 0.3 }}
   >
-    <img
+    <Image
       src={card.image}
       alt=""
-      decoding="async"
+      width={460}
+      height={580}
+      sizes="(min-width: 640px) 20vw, 50vw"
       className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.04]"
     />
     <span className="relative flex h-full flex-col justify-end px-3 pb-2.5 md:px-[1.17cqw] md:pb-[0.9cqw]">
@@ -75,7 +78,7 @@ const IdentityCard = ({ card, i, onNavigate }) => (
           </>
         )}
       </span>
-      <span className="flex items-center justify-between mt-1.5 md:mt-[0.6cqw] font-(family-name:--font-uni-mono) text-[#E8E8E1]/60 text-[12px] md:text-[clamp(10px,1.3cqw,20px)] tracking-[0.2px]">
+      <span className="flex items-center justify-between mt-1.5 md:mt-[0.6cqw] font-(family-name:--font-uni-mono) text-[#E8E8E1]/60 text-[12px] md:text-[clamp(11px,1.3cqw,20px)] tracking-[0.2px]">
         {card.count} elements
         <ArrowRight className="w-[0.9em] h-[1.1em] transition-transform duration-300 group-hover:translate-x-1" />
       </span>
@@ -83,12 +86,24 @@ const IdentityCard = ({ card, i, onNavigate }) => (
   </motion.button>
 );
 
+// Intrinsic sizes of the exported diagram SVGs (served as-is: next/image skips SVG optimisation)
+const DIAGRAM_SIZE = {
+  "logo-concept.svg": [604, 144],
+  "submark-concept.svg": [404, 144],
+  "logo-formation.svg": [928, 234],
+  "logo-spacing.svg": [779, 405],
+  "submark-spacing.svg": [296, 399],
+  "lockup-logo.svg": [678, 219],
+  "lockup-submark.svg": [367, 174],
+};
+
 const Diagram = ({ src, className, delay = 0 }) => (
-  <motion.img
+  <MotionImage
     src={src}
     alt=""
     aria-hidden="true"
-    decoding="async"
+    width={DIAGRAM_SIZE[src.split("/").pop()][0]}
+    height={DIAGRAM_SIZE[src.split("/").pop()][1]}
     className={`block h-auto max-w-full ${className}`}
     initial={{ opacity: 0, scale: 0.97 }}
     whileInView={{ opacity: 1, scale: 1 }}
@@ -114,7 +129,14 @@ const ExampleCard = ({ item, i, dont }) => (
     transition={{ duration: 0.6, ease: "easeOut", delay: (i % 3) * 0.08 }}
     viewport={{ once: true, amount: 0.4 }}
   >
-    <img src={item.image} alt="" decoding="async" className="block w-full aspect-[288/155]" />
+    <Image
+      src={item.image}
+      alt=""
+      width={576}
+      height={310}
+      sizes="(min-width: 640px) 25vw, 100vw"
+      className="block w-full h-auto aspect-[288/155]"
+    />
     <figcaption className="flex items-start justify-between gap-3 mt-2 md:mt-[0.5cqw] md:pr-[0.4cqw]">
       <span className={caption}>{item.caption}</span>
       {dont && <DontMark />}
@@ -152,13 +174,15 @@ const Caption = ({ title, note, className }) => (
 /* ----------------------------------- Slide ------------------------------------ */
 
 const IdentityDesignSlide = ({ onNavigate }) => (
-  <section id="identity-design" className="relative w-full px-6 md:px-0 pb-28 md:pb-[34.7cqw]">
+  <section id="identity-design" className="relative w-full px-6 md:px-0 pb-24 md:pb-[17cqw]">
     {/* Tinted glow behind the Brand Identity intro */}
-    <img
+    <Image
       src={`${A}/identity-bg.webp`}
       alt=""
       aria-hidden="true"
-      decoding="async"
+      width={1153}
+      height={1197}
+      sizes={COLUMN_SIZES}
       className="pointer-events-none absolute left-0 top-0 w-full h-[900px] md:h-[103.8cqw] object-cover object-top"
       style={{ maskImage: "linear-gradient(to bottom, #000 85%, transparent)", WebkitMaskImage: "linear-gradient(to bottom, #000 85%, transparent)" }}
     />
@@ -175,8 +199,8 @@ const IdentityDesignSlide = ({ onNavigate }) => (
       </div>
     </div>
 
-    {/* Identity Design index */}
-    <div className="relative mt-32 md:mt-[32.4cqw]">
+    {/* Identity Design index (z-10: stays above the Concept glow that rises behind it) */}
+    <div className="relative z-10 mt-32 md:mt-[32.4cqw]">
       <SectionIndex
         id="identity-design-index"
         title={
@@ -195,12 +219,16 @@ const IdentityDesignSlide = ({ onNavigate }) => (
 
     {/* Concept */}
     <div id="logo-concept" className="relative mt-28 md:mt-[33.8cqw]">
-      <img
+      {/* Flattened on the page colour, so no blend mode is needed (blend modes force a costly
+          composite on every scroll frame); the index above sits on top via z-10 */}
+      <Image
         src={`${A}/concept-glow.webp`}
         alt=""
         aria-hidden="true"
-        decoding="async"
-        className="pointer-events-none absolute -left-6 -right-6 md:left-0 md:right-0 -top-[59.3cqw] w-[calc(100%+48px)] md:w-full h-[81.6cqw] object-cover mix-blend-lighten"
+        width={1153}
+        height={941}
+        sizes={COLUMN_SIZES}
+        className="pointer-events-none absolute -left-6 -right-6 md:left-0 md:right-0 -top-[59.3cqw] w-[calc(100%+48px)] md:w-full max-w-none h-[81.6cqw] object-cover"
       />
       <motion.h3 className={`${heading} relative md:ml-[8.67cqw]`} {...fadeUp}>
         Concept

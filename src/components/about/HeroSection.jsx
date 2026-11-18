@@ -14,6 +14,9 @@ import GradientBlinds from "../GradientBlinds";
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Stable reference: GradientBlinds rebuilds its WebGL context when this prop changes identity
+const BLINDS_COLORS = ["#A5AB8A"];
+
 /* ─── tiny sub-component so clock state is isolated ─── */
 const Clock = ({ clockCountry, clockTimeZone }) => {
   const [country, setCountry] = useState(clockCountry || "India");
@@ -253,7 +256,7 @@ const HeroSection = ({
         >
           <GradientBlinds
             className="h-full w-full min-h-full min-w-full"
-            gradientColors={["#A5AB8A"]}
+            gradientColors={BLINDS_COLORS}
             angle={0}
             noise={0.025}
             blindCount={44}

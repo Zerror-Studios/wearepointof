@@ -32,6 +32,28 @@ export const universeSlides = [
   ...universeGroups.flatMap((g) => g.items),
 ];
 
+/*
+  Routing: slides 01-04 share /universe (sections on one scrolling page); every slide from
+  05 on is its own page at /universe/<id>.
+*/
+export const UNIVERSE_BASE = "/universe";
+const introIds = new Set(universeIntro.map((s) => s.id));
+
+export const isIntroSlide = (id) => introIds.has(id);
+
+// Slides that get their own page, in order
+export const slidePages = universeGroups.flatMap((g) => g.items);
+
+export const findSlide = (id) => universeSlides.find((s) => s.id === id);
+
+// Page that renders a slide (intro slides all live on /universe)
+export const slidePath = (id) => (isIntroSlide(id) ? UNIVERSE_BASE : `${UNIVERSE_BASE}/${id}`);
+
+// Link to a slide: intro slides are reached by hash on /universe
+export const slideHref = (id) => (isIntroSlide(id) ? `${UNIVERSE_BASE}#${id}` : slidePath(id));
+
+export const slidePageTitle = (slide) => `${slide.n} ${slide.label} · Universe`;
+
 export const immersions = [
   "Curated Questionnaire",
   "Brand Kickoff & Audit",

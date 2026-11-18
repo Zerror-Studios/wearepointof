@@ -78,6 +78,8 @@ const FoundersSection = ({ data, team = [] }) => {
                 <Image
                   width={1000}
                   height={1000}
+                  // Two columns from md, full width below
+                  sizes="(min-width: 768px) 50vw, 100vw"
                   src={item.image}
                   alt={item.name}
                   className={`w-full h-full object-cover ${item.objectPosition}`}

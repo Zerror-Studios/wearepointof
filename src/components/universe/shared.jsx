@@ -1,7 +1,14 @@
 "use client";
 import React from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { arrowDown } from "@/helper/universeArt";
+
+// next/image that framer-motion can animate (whileInView fades etc.)
+export const MotionImage = motion.create(Image);
+
+// Common `sizes` for images that span the main column (sidebar is 287px from lg up)
+export const COLUMN_SIZES = "(min-width: 1024px) calc(100vw - 287px), 100vw";
 
 /*
   Pieces shared by the Universe slides. Tablet/desktop sizes are in cqw of the main

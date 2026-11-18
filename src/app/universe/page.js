@@ -1,12 +1,4 @@
-import React from "react";
-import { JetBrains_Mono } from "next/font/google";
-import UniverseShell from "@/components/universe/UniverseShell";
-
-const mono = JetBrains_Mono({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-uni-mono",
-});
+import UniverseIntro from "@/components/universe/UniverseIntro";
 
 export const metadata = {
   title: "Universe",
@@ -15,10 +7,7 @@ export const metadata = {
   alternates: { canonical: "/universe" },
 };
 
+// Slides 01-04; slides 05-11 are their own pages under /universe/[slug]
 export default function UniversePage() {
-  return (
-    <div className={mono.variable}>
-      <UniverseShell />
-    </div>
-  );
+  return <UniverseIntro />;
 }

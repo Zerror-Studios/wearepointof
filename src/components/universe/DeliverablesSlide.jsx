@@ -1,8 +1,9 @@
 "use client";
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
-import { fadeUp, heading } from "./shared";
+import { fadeUp, heading, COLUMN_SIZES } from "./shared";
 
 /* 11 Deliverables + the closing statement that ends the Universe page */
 
@@ -19,11 +20,13 @@ const glow = { textShadow: "0 0 12px rgba(232,232,225,0.35)" };
 const DeliverablesSlide = () => (
   <section id="deliverables" className="relative w-full px-6 md:px-0">
     {/* Eclipse glow behind the heading */}
-    <img
+    <Image
       src="/universe/deliverables-eclipse.webp"
       alt=""
       aria-hidden="true"
-      decoding="async"
+      width={1153}
+      height={904}
+      sizes={COLUMN_SIZES}
       className="pointer-events-none absolute left-0 top-0 w-full h-[560px] md:h-[78.4cqw] object-cover object-left-top"
     />
 
@@ -51,11 +54,13 @@ const DeliverablesSlide = () => (
 
     {/* Closing statement */}
     <div className="relative -mx-6 md:mx-0 px-6 md:px-0 pt-32 md:pt-[19.4cqw] pb-20 md:pb-[9.9cqw]">
-      <img
+      <Image
         src="/universe/closing-bg.webp"
         alt=""
         aria-hidden="true"
-        decoding="async"
+        width={1153}
+        height={1167}
+        sizes={COLUMN_SIZES}
         className="pointer-events-none absolute inset-0 w-full h-full object-cover"
       />
       <motion.p

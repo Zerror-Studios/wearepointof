@@ -1,7 +1,9 @@
 "use client";
 import React from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { arrowDown } from "@/helper/universeArt";
+import { MotionImage, COLUMN_SIZES } from "./shared";
 
 /*
   05 Brand Strategy → Universe & Core.
@@ -190,10 +192,12 @@ const StrategyCard = ({ card, onNavigate }) => {
         ready ? "cursor-pointer" : "cursor-default"
       }`}
     >
-      <img
+      <Image
         src={card.image}
         alt=""
-        decoding="async"
+        width={936}
+        height={704}
+        sizes="(min-width: 640px) 41vw, 100vw"
         className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.04]"
       />
       <span className="relative flex h-full flex-col justify-between p-5 md:p-[2.08cqw]">
@@ -256,13 +260,15 @@ const UspCard = ({ card, i }) => (
 /* ----------------------------------- Slide ------------------------------------ */
 
 const BrandStrategySlide = ({ onNavigate }) => (
-  <section id="universe-and-core" className="relative w-full px-6 md:px-0 pb-28 md:pb-[34.7cqw]">
+  <section id="universe-and-core" className="relative w-full px-6 md:px-0 pb-24 md:pb-[17cqw]">
     {/* Glow + swirl behind the Brand Strategy intro and the Universe & Core index */}
-    <img
+    <Image
       src="/universe/strategy-bg.webp"
       alt=""
       aria-hidden="true"
-      decoding="async"
+      width={1153}
+      height={1900}
+      sizes={COLUMN_SIZES}
       className="pointer-events-none absolute left-0 top-0 w-full h-[1000px] md:h-[164.8cqw] object-cover object-top"
       style={{ maskImage: "linear-gradient(to bottom, #000 85%, transparent)", WebkitMaskImage: "linear-gradient(to bottom, #000 85%, transparent)" }}
     />
@@ -391,11 +397,13 @@ const BrandStrategySlide = ({ onNavigate }) => (
 
     {/* Background / story */}
     <div id="brand-background" className="relative mt-28 md:mt-[21.2cqw]">
-      <motion.img
+      <MotionImage
         src="/universe/background-sphere.webp"
         alt=""
         aria-hidden="true"
-        decoding="async"
+        width={1186}
+        height={1186}
+        sizes="(min-width: 768px) 52vw, 78vw"
         className="pointer-events-none absolute -left-[22vw] -top-[18vw] w-[78vw] md:-left-[5.46cqw] md:top-0 md:w-[51.43cqw] max-w-none"
         initial={{ opacity: 0, scale: 0.94 }}
         whileInView={{ opacity: 1, scale: 1 }}
