@@ -12,13 +12,13 @@ import { IMAGE_PLACEHOLDER_BG } from "@/components/workDets/imagePlaceholder";
 gsap.registerPlugin(ScrollTrigger);
 
 // Hide trailing photos that would leave a partial last row at each breakpoint
-// (grid is 2 / sm:3 / lg:6 columns). Class names are static so Tailwind picks them up.
+// (grid is 2 / sm:4 / lg:7 columns). Class names are static so Tailwind picks them up.
 const teamVisibility = (index, total) => {
   const fits = (cols) => index < total - (total % cols);
   return [
     fits(2) ? "block" : "hidden",
-    fits(3) ? "sm:block" : "sm:hidden",
-    fits(6) ? "lg:block" : "lg:hidden",
+    fits(4) ? "sm:block" : "sm:hidden",
+    fits(7) ? "lg:block" : "lg:hidden",
   ].join(" ");
 };
 
@@ -111,24 +111,24 @@ const FoundersSection = ({ data, team = [] }) => {
           <h2 className="heading-lg text-heading mb-12 sm:mb-16 md:mb-24 lg:mb-28">
             Many minds. One point of view.
           </h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 lg:gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3 sm:gap-4 lg:gap-6">
             {team.map((member, index) => (
               <motion.div
                 key={member.name}
-                className={`w-full aspect-4/5 overflow-hidden ${IMAGE_PLACEHOLDER_BG} ${teamVisibility(index, team.length)}`}
+                className={`relative w-full aspect-4/5 overflow-hidden ${IMAGE_PLACEHOLDER_BG} ${teamVisibility(index, team.length)}`}
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, ease: "easeOut", delay: (index % 6) * 0.05 }}
+                transition={{ duration: 0.4, ease: "easeOut", delay: (index % 7) * 0.05 }}
                 viewport={{ once: true, amount: 0.2 }}
               >
                 <Image
-                  width={400}
-                  height={500}
-                  // Already pre-compressed WebPs—skip Next's second re-encode
-                  unoptimized
+                  fill
+                  // Column widths: 7 across on desktop, 4 on tablet, 2 on phones
+                  sizes="(min-width: 1024px) 15vw, (min-width: 640px) 25vw, 50vw"
+                  quality={75}
                   src={member.image}
                   alt={member.name}
-                  className="w-full h-full object-cover object-top"
+                  className="object-cover object-top"
                 />
               </motion.div>
             ))}
