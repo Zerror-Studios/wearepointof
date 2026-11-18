@@ -159,6 +159,16 @@ body {
       rgba(0, 0, 0, 0));
 }
 
+/* Universe pages: from lg the fixed 287px sidebar sits under the nav, so the fade only
+   covers the main column and the sidebar header stays readable */
+@media (min-width: 1024px) {
+  .nav-gradient-universe {
+    background-size: calc(100% - 287px) 100%;
+    background-position: right top;
+    background-repeat: no-repeat;
+  }
+}
+
 .spin-slow {
   animation: spinSlow 60s linear infinite;
 }

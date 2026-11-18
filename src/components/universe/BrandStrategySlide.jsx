@@ -3,7 +3,7 @@ import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { arrowDown } from "@/helper/universeArt";
-import { MotionImage, COLUMN_SIZES } from "./shared";
+import { MotionImage, COLUMN_SIZES, TaperRing } from "./shared";
 
 /*
   05 Brand Strategy → Universe & Core.
@@ -140,30 +140,9 @@ const MissionRings = () => (
     whileInView="shown"
     viewport={{ once: true, amount: 0.4 }}
   >
-    <defs>
-      <linearGradient id="missionShade" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0" stopColor="#E8E8E1" />
-        <stop offset="0.55" stopColor="#E8E8E1" stopOpacity="0.8" />
-        <stop offset="1" stopColor="#E8E8E1" stopOpacity="0.3" />
-      </linearGradient>
-    </defs>
+    {/* Line tapers thick → thin with a fading gradient (1 viewBox unit ≈ 1px at 1440) */}
     {MISSION.map((c, i) => (
-      <motion.circle
-        key={c.cx}
-        cx={c.cx}
-        cy={3365.15}
-        r={c.r}
-        stroke="url(#missionShade)"
-        strokeOpacity={c.o}
-        strokeWidth="0.8"
-        vectorEffect="non-scaling-stroke"
-        // Start the stroke at the top so it draws clockwise from 12 o'clock
-        transform={`rotate(-90 ${c.cx} 3365.15)`}
-        variants={{
-          hidden: { pathLength: 0 },
-          shown: { pathLength: 1, transition: { duration: 1.8, ease: "easeInOut", delay: i * 0.18 } },
-        }}
-      />
+      <TaperRing key={c.cx} cx={c.cx} cy={3365.15} r={c.r} thick={2.4} thin={0.35} opacity={c.o} duration={1.8} delay={i * 0.18} />
     ))}
   </motion.svg>
 );

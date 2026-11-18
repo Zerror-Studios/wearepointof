@@ -2,7 +2,7 @@
 import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { fadeUp, heading, body, subheading, SectionIndex, MotionImage, COLUMN_SIZES } from "./shared";
+import { fadeUp, heading, body, subheading, SectionIndex, MotionImage, COLUMN_SIZES, TaperRing } from "./shared";
 
 /*
   06 Positioning & Audience + 07 Personality & Voice. The design runs them as one
@@ -101,26 +101,8 @@ const VoiceCircle = ({ c, i }) => (
       viewport={{ once: true, amount: 0.5 }}
       style={{ opacity: c.o }}
     >
-      <defs>
-        <linearGradient id={`voiceShade${i}`} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#E8E8E1" />
-          <stop offset="0.6" stopColor="#E8E8E1" stopOpacity="0.7" />
-          <stop offset="1" stopColor="#E8E8E1" stopOpacity="0.35" />
-        </linearGradient>
-      </defs>
-      <motion.circle
-        cx="50"
-        cy="50"
-        r="49.7"
-        stroke={`url(#voiceShade${i})`}
-        strokeWidth="0.6"
-        vectorEffect="non-scaling-stroke"
-        transform="rotate(-90 50 50)"
-        variants={{
-          hidden: { pathLength: 0 },
-          shown: { pathLength: 1, transition: { duration: 1.6, ease: "easeInOut", delay: i * 0.15 } },
-        }}
-      />
+      {/* Thick → thin gradient line; 1 unit ≈ 2.2px at desktop size */}
+      <TaperRing cx={50} cy={50} r={49.6} thick={1.1} thin={0.16} delay={i * 0.15} />
     </motion.svg>
     <motion.span
       className="relative font-heading font-light text-[#E8E8E1]/80 text-[clamp(11px,1.56cqw,26px)]"

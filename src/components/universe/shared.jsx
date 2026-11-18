@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useId, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { arrowDown } from "@/helper/universeArt";
@@ -26,6 +26,54 @@ export const heading = "font-heading font-light text-[#E8E8E1] leading-[1.15] te
 export const body = "font-body text-[#BEBEB8] leading-[1.7] text-[15px] md:leading-[1.61] md:text-[clamp(13px,1.56cqw,26px)]";
 // 22px card / row titles in the design
 export const subheading = "font-heading font-light leading-[1.32] text-[19px] md:text-[clamp(14px,1.91cqw,32px)]";
+
+/*
+  A ring whose line tapers from thick (top-left) to hairline (bottom-right), filled with a
+  fading gradient. Drawn as a filled shape (outer circle minus an offset inner circle), so
+  it renders the same at any size. Must sit inside an svg with initial="hidden" /
+  whileInView="shown": it draws in clockwise from 12 o'clock through a mask, and the mask
+  is dropped once the draw finishes so the ring is always closed.
+*/
+const circlePath = (x, y, r) => `M${x - r} ${y}a${r} ${r} 0 1 0 ${2 * r} 0a${r} ${r} 0 1 0 ${-2 * r} 0Z`;
+
+export const TaperRing = ({ cx, cy, r, thick, thin, opacity = 1, delay = 0, duration = 1.6, color = "#E8E8E1" }) => {
+  const uid = useId().replace(/[^a-zA-Z0-9_-]/g, "");
+  const [drawn, setDrawn] = useState(false);
+  const band = (thick + thin) / 2; // average line width
+  const shift = (thick - thin) / 2 / Math.SQRT2; // inner circle moves toward the thin side
+  const d = circlePath(cx, cy, r) + circlePath(cx + shift, cy + shift, r - band);
+
+  return (
+    <g opacity={opacity}>
+      <defs>
+        <linearGradient id={`taper-${uid}`} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor={color} />
+          <stop offset="0.55" stopColor={color} stopOpacity="0.75" />
+          <stop offset="1" stopColor={color} stopOpacity="0.25" />
+        </linearGradient>
+        {!drawn && (
+          <mask id={`taper-mask-${uid}`}>
+            <motion.circle
+              cx={cx}
+              cy={cy}
+              r={r - band / 2}
+              fill="none"
+              stroke="#fff"
+              strokeWidth={thick * 3 + 2}
+              transform={`rotate(-90 ${cx} ${cy})`}
+              variants={{
+                hidden: { pathLength: 0 },
+                shown: { pathLength: 1, transition: { duration, ease: "easeInOut", delay } },
+              }}
+              onAnimationComplete={(def) => def === "shown" && setDrawn(true)}
+            />
+          </mask>
+        )}
+      </defs>
+      <path d={d} fillRule="evenodd" fill={`url(#taper-${uid})`} mask={drawn ? undefined : `url(#taper-mask-${uid})`} />
+    </g>
+  );
+};
 
 export const ArrowRight = ({ className }) => (
   <svg viewBox="854 937 19 23" className={`-rotate-90 ${className}`} fill="currentColor" aria-hidden="true">

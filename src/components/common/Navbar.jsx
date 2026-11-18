@@ -312,9 +312,10 @@ export default function Navbar() {
   }, []);
 
   const isHome = pathname === "/";
-  // /universe (and its slide pages) has its own fixed sidebar under the nav; a top fade would dim it
+  // /universe (and its slide pages) has a fixed sidebar under the nav: its gradient starts
+  // after the sidebar (nav-gradient-universe) so the sidebar header isn't dimmed
   const isUniverse = pathname === "/universe" || pathname.startsWith("/universe/");
-  const gradientEnabled = pathname !== "/work" && !isUniverse && showNavGradient;
+  const gradientEnabled = pathname !== "/work" && showNavGradient;
 
   return (
     <>
@@ -333,7 +334,7 @@ export default function Navbar() {
       <nav
         id="site-nav"
         className={`fixed top-0 left-0 w-full z-50 text-foreground transition-opacity duration-200 ease-out ${
-          gradientEnabled && !isHome ? "nav-gradient" : ""
+          gradientEnabled && !isHome ? `nav-gradient${isUniverse ? " nav-gradient-universe" : ""}` : ""
         } ${isHome && !menuOpen ? "mix-blend-difference" : ""} ${
           landingActive ? "opacity-0 pointer-events-none" : "opacity-100"
         }`}
