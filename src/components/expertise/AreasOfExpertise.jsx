@@ -127,8 +127,11 @@ const AreasOfExpertise = () => {
               {/* Image */}
               <div ref={imageWrapRef} className="w-40 h-40 lg:w-46 lg:h-46 mb-6">
                 <Image
-                  width={1000}
-                  height={1000}
+                  width={500}
+                  height={500}
+                  // Shown at 160–184px; above the fold on desktop, so it's the LCP image
+                  sizes="184px"
+                  loading="eager"
                   src="/expertise/graphic-circle.png"
                   alt="graphic"
                   className="w-full h-full object-contain spin-slow"

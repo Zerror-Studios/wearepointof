@@ -66,8 +66,9 @@ export default function Footer() {
               <Image
                 src="/logo/po-logo.png"
                 alt="Point Of logo"
-                width={120}
-                height={40}
+                // Real aspect ratio of the file (2763×3474), sized for the largest (h-14) at 2x
+                width={89}
+                height={112}
                 className="h-10 sm:h-12 md:h-11 lg:h-12 xl:h-14 w-auto object-contain"
               />
             </Link>
