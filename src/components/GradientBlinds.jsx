@@ -61,10 +61,15 @@ const GradientBlinds = ({
     const container = containerRef.current;
     if (!container) return;
 
+    // A soft, noisy gradient gains nothing from retina density, and a full-screen shader at
+    // 3x DPR is 9x the pixels on phones, so cap the backing resolution.
+    const deviceDpr = typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1;
+    const isSmall = typeof window !== "undefined" && window.matchMedia("(max-width: 1023px)").matches;
     const renderer = new Renderer({
-      dpr: dpr ?? (typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1),
+      dpr: dpr ?? Math.min(deviceDpr, isSmall ? 1 : 1.5),
       alpha: true,
-      antialias: true,
+      // A single full-screen triangle has no geometry edges to smooth
+      antialias: false,
     });
     rendererRef.current = renderer;
     const gl = renderer.gl;
@@ -419,6 +424,27 @@ void main() {
     // Listen on container so moves still track when canvas is under content
     container.addEventListener("pointermove", onPointerMove);
 
+    // Only run the render loop while the canvas is on screen and the tab is visible,
+    // so the rest of the page scrolls without a shader burning every frame.
+    let onScreen = true;
+    const start = () => {
+      if (rafRef.current || !onScreen || document.hidden) return;
+      lastTimeRef.current = 0;
+      rafRef.current = requestAnimationFrame(loop);
+    };
+    const stop = () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    };
+    const io = new IntersectionObserver(([entry]) => {
+      onScreen = entry.isIntersecting;
+      if (onScreen) start();
+      else stop();
+    });
+    io.observe(container);
+    const onVisibility = () => (document.hidden ? stop() : start());
+    document.addEventListener("visibilitychange", onVisibility);
+
     const loop = (t) => {
       rafRef.current = requestAnimationFrame(loop);
       uniforms.iTime.value = t * 0.001;
@@ -444,10 +470,12 @@ void main() {
         }
       }
     };
-    rafRef.current = requestAnimationFrame(loop);
+    start();
 
     return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      stop();
+      io.disconnect();
+      document.removeEventListener("visibilitychange", onVisibility);
       container.removeEventListener("pointermove", onPointerMove);
       ro.disconnect();
       if (canvas.parentElement === container) {

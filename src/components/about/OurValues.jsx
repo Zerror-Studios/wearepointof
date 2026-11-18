@@ -114,16 +114,12 @@ export default function OurValues() {
   });
 
   return (
-    <section ref={sectionRef} className={isMobile ? "relative py-16" : "relative h-[600vh]"}>
+    // Layout comes from CSS breakpoints (not isMobile) so the first paint is already the right
+    // height; switching 600vh → auto after hydration caused a big reflow + ScrollTrigger refresh.
+    <section ref={sectionRef} className="relative py-16 md:py-0 md:h-[600vh]">
 
-      {/* Sticky wrapper */}
-      <div
-        className={
-          isMobile
-            ? "flex w-full items-center pt-6 justify-center overflow-hidden"
-            : "sticky top-0 flex h-svh w-full items-center pt-6 justify-center overflow-hidden"
-        }
-      >
+      {/* Sticky wrapper (md+) */}
+      <div className="flex w-full items-center pt-6 justify-center overflow-hidden md:sticky md:top-0 md:h-svh">
 
         {/*
           Heading + SVG share one sized box so "Our Values" stays
