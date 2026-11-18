@@ -136,7 +136,8 @@ const SecondarySwatch = ({ s, i }) => (
   </motion.div>
 );
 
-const alphabet = ["ABCDEFGHIJKLMNOPQRSTUVW", "XYZabcdefghijklmnopqrstuvwxyz", "0123456789"];
+// One line each: uppercase, lowercase, figures (sized below so no line wraps)
+const alphabet = ["ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz", "0123456789"];
 
 const TypeSpecimen = ({ face }) => (
   <div id={face.id} className="relative mt-28 md:mt-[34cqw]">
@@ -166,13 +167,12 @@ const TypeSpecimen = ({ face }) => (
         <motion.div className="mt-12 md:mt-auto border-t border-[#8E8E8E]/60 pt-6 md:pt-[2.6cqw]" {...fadeUp}>
           <p className="font-body font-light text-[#E8E8E1]/80 text-[14px] md:text-[clamp(11px,1.39cqw,22px)]">Overview</p>
           <p
-            className={`${face.family} font-light text-[#E8E8E1] leading-[1.12] tracking-[0.02em] text-[20px] md:text-[2.75cqw] mt-4 md:mt-[2.6cqw] break-all`}
+            className={`${face.family} font-light text-[#E8E8E1] leading-[1.12] tracking-[0.02em] text-[clamp(13px,4.4vw,20px)] md:text-[2.3cqw] mt-4 md:mt-[2.6cqw]`}
           >
-            {alphabet.map((line, i) => (
-              <React.Fragment key={line}>
-                {i > 0 && <br />}
+            {alphabet.map((line) => (
+              <span key={line} className="block whitespace-nowrap">
                 {line}
-              </React.Fragment>
+              </span>
             ))}
           </p>
         </motion.div>
