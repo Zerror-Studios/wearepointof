@@ -19,9 +19,9 @@ export const foundersData = [
     },
   ];
 
-// Ordered for visual rhythm (not alphabetical): men, dark/light outfits and wider
-// full-body shots are spread so none sit side by side in the 2/3/6-column grids.
-// Trailing items that leave a partial row are hidden, so the last entry may not show.
+// Ordered for visual rhythm (not alphabetical): dark/light outfits and wider full-body
+// shots are spread out. 28 photos fill the 2/4/7-column grids exactly; if the count
+// changes, trailing items that leave a partial row are hidden.
 export const teamImages = [
   "Shaily",
   "Vansh Slayt",
@@ -31,12 +31,14 @@ export const teamImages = [
   "Suraj BD",
   "Himanshu",
   "Tushna",
+  "Abhilasha",
   "Khushboo",
   "Lakshita",
   "Gurnoor",
   "Sanika",
   "Divya Stellora",
   "Shivangi",
+  "Manasi Dharankar",
   "Suvi",
   "Dhruti",
   "shreya sachdeva",
@@ -44,6 +46,7 @@ export const teamImages = [
   "Karan Katalyst",
   "Muskan KAur",
   "Priyanka Singh",
+  "Varun",
   "Dhruti Gothi",
   "Shreya Jangid",
   "Divyansh",
