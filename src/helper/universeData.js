@@ -12,17 +12,17 @@ export const universeGroups = [
     title: "Brand Strategy",
     items: [
       { id: "universe-and-core", n: "05", label: "Universe & Core", ready: true },
-      { id: "positioning-and-audience", n: "06", label: "Positioning & Audience", ready: false },
-      { id: "personality-and-voice", n: "07", label: "Personality & Voice", ready: false },
+      { id: "positioning-and-audience", n: "06", label: "Positioning & Audience", ready: true },
+      { id: "personality-and-voice", n: "07", label: "Personality & Voice", ready: true },
     ],
   },
   {
     title: "Brand Identity",
     items: [
-      { id: "identity-design", n: "08", label: "Identity Design", ready: false },
-      { id: "colour-and-typography", n: "09", label: "Colour & Typography", ready: false },
-      { id: "visual-language", n: "10", label: "Visual Language", ready: false },
-      { id: "deliverables", n: "11", label: "Deliverables", ready: false },
+      { id: "identity-design", n: "08", label: "Identity Design", ready: true },
+      { id: "colour-and-typography", n: "09", label: "Colour & Typography", ready: true },
+      { id: "visual-language", n: "10", label: "Visual Language", ready: true },
+      { id: "deliverables", n: "11", label: "Deliverables", ready: true },
     ],
   },
 ];

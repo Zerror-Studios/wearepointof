@@ -26,7 +26,7 @@ const body = "font-body text-[#BEBEB8] leading-[1.7] text-[15px] md:leading-[1.6
 
 const strategyCards = [
   { n: "05", title: ["Universe &", "Core"], count: 6, image: "/universe/strategy-card1.webp", target: "universe-core-index" },
-  { n: "06", title: ["Positioning,", "Audience & Voice"], count: 3, image: "/universe/strategy-card2.webp", target: null },
+  { n: "06", title: ["Positioning,", "Audience & Voice"], count: 3, image: "/universe/strategy-card2.webp", target: "positioning-and-audience" },
 ];
 
 const coreIndex = [

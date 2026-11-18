@@ -4,6 +4,11 @@ import { AnimatePresence, motion } from "framer-motion";
 import UniverseSidebar from "./UniverseSidebar";
 import { CoverSlide, ManifestoSlide, WhatIsABrandSlide, ImmersionsSlide } from "./UniverseSlides";
 import BrandStrategySlide from "./BrandStrategySlide";
+import { PositioningSlide, VoiceSlide } from "./PositioningSlide";
+import IdentityDesignSlide from "./IdentityDesignSlide";
+import ColourTypographySlide from "./ColourTypographySlide";
+import VisualLanguageSlide from "./VisualLanguageSlide";
+import DeliverablesSlide from "./DeliverablesSlide";
 import { universeSlides } from "@/helper/universeData";
 import { scrollToId } from "@/helper/universeScroll";
 
@@ -86,6 +91,12 @@ const UniverseShell = () => {
         <WhatIsABrandSlide />
         <ImmersionsSlide />
         <BrandStrategySlide onNavigate={navigate} />
+        <PositioningSlide onNavigate={navigate} />
+        <VoiceSlide />
+        <IdentityDesignSlide onNavigate={navigate} />
+        <ColourTypographySlide onNavigate={navigate} />
+        <VisualLanguageSlide onNavigate={navigate} />
+        <DeliverablesSlide />
       </main>
 
       {/* Slide counter */}
