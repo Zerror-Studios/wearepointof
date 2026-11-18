@@ -41,17 +41,19 @@ export const teamImages = [
   "Manasi Dharankar",
   "Suvi",
   "Dhruti",
-  "shreya sachdeva",
-  "deepangi",
+  "Shreya Sachdeva",
+  "Deepangi",
   "Karan Katalyst",
-  "Muskan KAur",
+  "Muskan Kaur",
   "Priyanka Singh",
   "Varun",
   "Dhruti Gothi",
   "Shreya Jangid",
   "Divyansh",
   "Hritika Malji",
-].map((name) => ({ name, image: encodeURI(`/Team/${name}.webp`) }));
+  // Files in public/Team are the lowercase, hyphenated name (e.g. dhruti-gothi.webp): names
+  // with spaces 404'd through the live host's image optimizer.
+].map((name) => ({ name, image: `/Team/${name.toLowerCase().replace(/\s+/g, "-")}.webp` }));
 
 export const transformData = [
     {
