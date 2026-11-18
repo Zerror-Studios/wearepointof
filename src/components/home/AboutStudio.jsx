@@ -104,8 +104,11 @@ const AboutStudio = () => {
       let pinTl;
       let gradientHidden = false;
       const syncNavGradient = () => {
-        if (!fadeTl || !pinTl) return;
-        const hidden = fadeTl.progress() > 0 && pinTl.scrollTrigger.progress < 1;
+        // The ScrollTrigger is nulled when the context reverts (e.g. on route
+        // change), but the timeline can still fire one last update.
+        const pinSt = pinTl?.scrollTrigger;
+        if (!fadeTl || !pinSt) return;
+        const hidden = fadeTl.progress() > 0 && pinSt.progress < 1;
         if (hidden === gradientHidden) return;
         gradientHidden = hidden;
         window.dispatchEvent(
