@@ -6,6 +6,16 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import { useGSAP } from "@gsap/react";
 
+// Desktop journey path. Kept on one line: a multi-line JSX attribute is whitespace-
+// normalised differently on the server and client, which caused a hydration mismatch.
+const DESKTOP_PATH_D = [
+  "M268,452C379.3,443.2,445,436.8,511,430.4c65.6-6.4,134.6,10.4,192.6,39.4c20.9,10.4,40.8,22.5,59.6,36",
+  "c49.9,35.9,82,75.4,125.4,112.4c42.3,36.4,96.1,67.9,150.4,85.5c170.7,59,270.4-69.1,352.7-227.9c30.2-56.4,53.3-114.8,91.2-164.9",
+  "c97.3-130.1,301.5-137.1,435.1-25.7c46.4,37.9,85.6,87.5,130.9,126.8c144.5,132,317.3,42.2,445.7-65.5",
+  "c39.8-33.2,73.1-68.9,109.6-104.6c129.4-132.2,293.2-187,461.6-155.6c86.3,15.4,161.9,57,227.4,114",
+  "c274.5,235.8,302.7,652.8,72.1,909.9c-308.6,312.8-549.9,161.2-901.2,266.8c-193,58-161.2,47.4-368.1,136.8",
+].join(" ");
+
 // Mobile/tablet path: bends alternate left/right every MOBILE_BEND_GAP units.
 // Handles at 0.3634 × gap make each half-wave match a sine curve.
 const MOBILE_VIEW_W = 741;
@@ -13,12 +23,17 @@ const MOBILE_VIEW_H = 3760;
 const MOBILE_BEND_GAP = 540;
 const MOBILE_BEND_X = [210.5, 530.5];
 const MOBILE_PATH_Y = Array.from({ length: 7 }, (_, i) => 200 + i * MOBILE_BEND_GAP);
-// Last curve runs out to the left text edge (5%) so the dot drops in line with the left column
-const MOBILE_END_X = MOBILE_VIEW_W * 0.05;
+// The path starts further left than the other left bends so its first swing to the
+// right clears the Discovery paragraph hanging below the heading.
+const MOBILE_START_X = 90;
+// Last curve runs out to the left text edge (~24px on phones) so the dot drops in line with the left column
+const MOBILE_END_X = MOBILE_VIEW_W * 0.06;
+const mobileBendX = (i) =>
+  i === 0 ? MOBILE_START_X : i === MOBILE_PATH_Y.length - 1 ? MOBILE_END_X : MOBILE_BEND_X[i % 2];
 const MOBILE_PATH_D = MOBILE_PATH_Y.reduce((d, y, i) => {
-  const x = i === MOBILE_PATH_Y.length - 1 ? MOBILE_END_X : MOBILE_BEND_X[i % 2];
+  const x = mobileBendX(i);
   if (i === 0) return `M${x} ${y}`;
-  const prevX = MOBILE_BEND_X[(i - 1) % 2];
+  const prevX = mobileBendX(i - 1);
   const handle = MOBILE_BEND_GAP * 0.3634;
   return `${d} C${prevX} ${y - MOBILE_BEND_GAP + handle} ${x} ${y - handle} ${x} ${y}`;
 }, "");
@@ -482,11 +497,7 @@ const OurProcess = () => {
               <path
                 ref={pathRef}
                 className="theLine jp1"
-                d="M268,452C379.3,443.2,445,436.8,511,430.4c65.6-6.4,134.6,10.4,192.6,39.4c20.9,10.4,40.8,22.5,59.6,36
-                c49.9,35.9,82,75.4,125.4,112.4c42.3,36.4,96.1,67.9,150.4,85.5c170.7,59,270.4-69.1,352.7-227.9c30.2-56.4,53.3-114.8,91.2-164.9
-                c97.3-130.1,301.5-137.1,435.1-25.7c46.4,37.9,85.6,87.5,130.9,126.8c144.5,132,317.3,42.2,445.7-65.5
-                c39.8-33.2,73.1-68.9,109.6-104.6c129.4-132.2,293.2-187,461.6-155.6c86.3,15.4,161.9,57,227.4,114
-                c274.5,235.8,302.7,652.8,72.1,909.9c-308.6,312.8-549.9,161.2-901.2,266.8c-193,58-161.2,47.4-368.1,136.8"
+                d={DESKTOP_PATH_D}
               />
             </g>
 
@@ -676,8 +687,12 @@ const OurProcess = () => {
               <div
                 key={step.title}
                 ref={(el) => (mobileStepsRef.current[i] = el)}
+                // Side offsets match the "How we work" heading padding (px-6 / sm:px-10 / md:px-12).
+                // From md the path wrap is centred at min(92vw, 920px), so subtract its own margin.
                 className={`step absolute w-[52%] max-w-[24rem] -translate-y-1/2 transition-opacity duration-500 ease-out ${
-                  onRight ? "right-[5%] text-right" : "left-[5%] text-left"
+                  onRight
+                    ? "right-6 sm:right-10 md:right-[calc(48px_-_(100vw_-_min(92vw,920px))/2)] text-right"
+                    : "left-6 sm:left-10 md:left-[calc(48px_-_(100vw_-_min(92vw,920px))/2)] text-left"
                 }`}
                 style={{ top: `${(MOBILE_PATH_Y[i] / MOBILE_VIEW_H) * 100}%`, opacity: 0.2 }}
               >
