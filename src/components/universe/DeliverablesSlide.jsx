@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { fadeUp, heading, COLUMN_SIZES } from "./shared";
+import { ambient } from "@/helper/universeAmbient";
 
 /* 11 Deliverables + the closing statement that ends the Universe page */
 
@@ -27,7 +28,9 @@ const DeliverablesSlide = () => (
       width={1153}
       height={904}
       sizes={COLUMN_SIZES}
-      className="pointer-events-none absolute left-0 top-0 w-full h-[560px] md:h-[78.4cqw] object-cover object-left-top"
+      ref={ambient}
+      className="uni-bg uni-amb uni-amb-breathe pointer-events-none absolute left-0 top-0 w-full h-[560px] md:h-[78.4cqw] object-cover object-left-top"
+      style={{ "--uni-fade-y": "linear-gradient(to bottom, #000 75%, transparent)", "--amb-dur": "8s", "--amb-min": 0.6 }}
     />
 
     <div className="relative pt-28 md:pt-[27.4cqw] md:flex md:min-h-[78.4cqw]">
@@ -61,7 +64,9 @@ const DeliverablesSlide = () => (
         width={1153}
         height={1167}
         sizes={COLUMN_SIZES}
-        className="pointer-events-none absolute inset-0 w-full h-full object-cover"
+        ref={ambient}
+        className="uni-bg uni-amb uni-amb-breathe pointer-events-none absolute inset-0 w-full h-full object-cover"
+        style={{ "--amb-dur": "11s", "--amb-delay": "-4s" }}
       />
       <motion.p
         className="relative font-heading font-light text-[#E8E8E1] leading-[1.37] text-[30px] md:text-[3.82cqw] md:ml-[8.67cqw]"

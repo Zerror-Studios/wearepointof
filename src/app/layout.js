@@ -2,7 +2,7 @@
 
 import SmoothScroller from "@/components/SmoothScroller";
 import "./globals.css";
-import Navbar from "@/components/common/Navbar";
+import NavbarVisibility from "@/components/common/NavbarVisibility";
 import FooterVisibility from "@/components/common/FooterVisibility";
 import localFont from "next/font/local";
 import ToasterProvider from "@/components/common/ToasterProvider";
@@ -123,7 +123,7 @@ export default function RootLayout({ children }) {
       <body suppressHydrationWarning className={`${headingFont.variable} ${bodyFont.variable}`}>
         <SmoothScroller />
         <ToasterProvider />
-        <Navbar />
+        <NavbarVisibility excludePaths={["/admin", "/universe"]} />
         {children}
         <SanityLive />
         <FooterVisibility excludePaths={["/admin", "/universe"]} excludeExactPaths={["/work"]} />

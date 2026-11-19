@@ -22,25 +22,22 @@ export default function Navbar() {
   const [landingActive, setLandingActive] = useState(false);
   const [showNavGradient, setShowNavGradient] = useState(true);
   const [navGradientSuppressed, setNavGradientSuppressed] = useState(false);
-  // False from the moment the menu opens until its close animation has fully finished
-  const [menuSettled, setMenuSettled] = useState(true);
   const pathname = usePathname();
   const menuOpenRef = useRef(false);
   const overLightSectionRef = useRef(false);
   const logoDelayRef = useRef(null);
   const gradientDelayRef = useRef(null);
-  const settleDelayRef = useRef(null);
 
   const applyNavTheme = (invert) => {
     setLogoLight(!invert);
     setShowNavGradient(!invert);
   };
 
-  // Hide navbar on excluded routes (e.g. Sanity Studio)
-  const excludePaths = ["/admin"];
-  if (pathname && excludePaths.some((p) => pathname === p || pathname.startsWith(`${p}/`))) {
-    return null;
-  }
+  // The navbar unmounts on routes without it (e.g. /universe): never leave the page
+  // scroll-locked if that happens while the fullscreen menu is open or closing.
+  useEffect(() => () => {
+    document.body.style.overflow = "";
+  }, []);
 
   // Home landing: keep navbar hidden until the hero landing overlay finishes.
   useEffect(() => {
@@ -171,13 +168,10 @@ export default function Navbar() {
 
     logoDelayRef.current?.kill();
     gradientDelayRef.current?.kill();
-    settleDelayRef.current?.kill();
     logoDelayRef.current = null;
     gradientDelayRef.current = null;
-    settleDelayRef.current = null;
 
     if (menuOpen) {
-      setMenuSettled(false);
       applyNavTheme(true);
       tl.current.timeScale(1).play();
       document.body.style.overflow = "hidden";
@@ -187,9 +181,6 @@ export default function Navbar() {
       logoDelayRef.current = gsap.delayedCall(restoreDelay, () => {
         if (!menuOpenRef.current) applyNavTheme(overLightSectionRef.current);
       });
-      settleDelayRef.current = gsap.delayedCall(reverseDuration, () => {
-        if (!menuOpenRef.current) setMenuSettled(true);
-      });
       tl.current.timeScale(1.8).reverse();
       document.body.style.overflow = "auto";
     }
@@ -197,7 +188,6 @@ export default function Navbar() {
     return () => {
       logoDelayRef.current?.kill();
       gradientDelayRef.current?.kill();
-      settleDelayRef.current?.kill();
     };
   }, [menuOpen]);
 
@@ -322,10 +312,6 @@ export default function Navbar() {
   }, []);
 
   const isHome = pathname === "/";
-  // /universe (and its slide pages) has a fixed sidebar under the nav: its gradient is a
-  // separate layer that starts after the sidebar (lg+), and only fades in once the
-  // fullscreen menu has completely closed so it never shows mid-animation
-  const isUniverse = pathname === "/universe" || pathname.startsWith("/universe/");
   const gradientEnabled = pathname !== "/work" && showNavGradient;
 
   return (
@@ -342,18 +328,10 @@ export default function Navbar() {
           }`}
         />
       )}
-      {isUniverse && (
-        <div
-          aria-hidden="true"
-          className={`nav-gradient fixed top-0 left-0 lg:left-[287px] right-0 h-16 sm:h-20 z-49 pointer-events-none transition-opacity duration-500 ease-out ${
-            gradientEnabled && menuSettled && !menuOpen ? "opacity-100" : "opacity-0"
-          }`}
-        />
-      )}
       <nav
         id="site-nav"
         className={`fixed top-0 left-0 w-full z-50 text-foreground transition-opacity duration-200 ease-out ${
-          gradientEnabled && !isHome && !isUniverse ? "nav-gradient" : ""
+          gradientEnabled && !isHome ? "nav-gradient" : ""
         } ${isHome && !menuOpen ? "mix-blend-difference" : ""} ${
           landingActive ? "opacity-0 pointer-events-none" : "opacity-100"
         }`}

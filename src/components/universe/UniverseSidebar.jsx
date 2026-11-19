@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { saturn, chevron } from "@/helper/universeArt";
-import { universeIntro, universeGroups, slideHref } from "@/helper/universeData";
+import { universeGroups, slideHref } from "@/helper/universeData";
 
 const SaturnIcon = () => (
   <svg viewBox="23 33 32 20" className="w-[31px] h-[19px] shrink-0" fill="#E8E8E0" aria-hidden="true">
@@ -37,8 +37,8 @@ const NavItem = ({ item, active, onNavigate }) => (
         onNavigate(item.id);
       }}
       aria-current={active ? "page" : undefined}
-      className={`w-full h-[47px] flex items-center gap-[1ch] pl-[25px] pr-4 text-left text-[15px] tracking-[0.2px] text-[#E8E8E1] transition-colors duration-300 ${
-        active ? "bg-[#2a2a2a]" : "hover:bg-white/5"
+      className={`w-full h-[47px] flex items-center gap-[1ch] pl-[25px] pr-4 text-left text-[15px] tracking-[0.2px] transition-colors duration-300 ${
+        active ? "bg-[#2a2a2a] text-white" : "text-[#E8E8E1]/50 hover:bg-[#2a2a2a] hover:text-white"
       }`}
     >
       <span>{item.n}</span>
@@ -80,12 +80,6 @@ const UniverseSidebar = ({ activeId, onNavigate }) => (
       <SaturnIcon />
       <span className="font-heading font-light text-[22px] text-[#E8E8E0] leading-none">Universe</span>
     </div>
-
-    <ul className="mt-[18px]">
-      {universeIntro.map((item) => (
-        <NavItem key={item.id} item={item} active={activeId === item.id} onNavigate={onNavigate} />
-      ))}
-    </ul>
 
     {universeGroups.map((group) => (
       <Group key={group.title} group={group} activeId={activeId} onNavigate={onNavigate} />

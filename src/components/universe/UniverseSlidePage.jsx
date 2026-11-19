@@ -26,7 +26,7 @@ const UniverseSlidePage = ({ slug }) => {
   return (
     <>
       <Slide onNavigate={navigate} />
-      <SlidePager from={slug} />
+      <SlidePager key={slug} from={slug} />
     </>
   );
 };

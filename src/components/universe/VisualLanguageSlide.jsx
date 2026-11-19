@@ -19,7 +19,7 @@ const index = [
   { label: "Glass & Holographic Effects", target: "visual-glass" },
 ];
 
-const gradients = Array.from({ length: 13 }, (_, i) => `${V}/gradient-${i + 1}.webp`);
+const gradients = Array.from({ length: 13 }, (_, i) => `${V}/gradient-v2-${i + 1}.webp`);
 
 /* A gallery image that fades up as it enters, with a slow zoom on hover.
    size = intrinsic [width, height] of the exported file; sizes = its rendered width. */
