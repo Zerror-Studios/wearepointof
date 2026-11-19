@@ -1,12 +1,10 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+import React from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { rings, quoteOutline, quoteOpen, quoteClose, arrowDown } from "@/helper/universeArt";
+import { quoteOutline, quoteOpen, quoteClose, arrowDown } from "@/helper/universeArt";
 import { immersions } from "@/helper/universeData";
-
-gsap.registerPlugin(ScrollTrigger);
+import { ambient } from "@/helper/universeAmbient";
 
 /*
   All slides are sized off the main column (a CSS container), so 1cqw = 1% of its
@@ -53,7 +51,12 @@ export const CoverSlide = ({ onNext }) => (
           <br />
           Everything we build with.
           {/* Lens-flare cross */}
-          <span aria-hidden="true" className="absolute -left-[11px] top-[calc(100%+8px)] pointer-events-none">
+          <span
+            aria-hidden="true"
+            ref={ambient}
+            className="uni-amb uni-amb-breathe absolute -left-[11px] top-[calc(100%+8px)] pointer-events-none"
+            style={{ "--amb-dur": "5s", "--amb-min": 0.35 }}
+          >
             <span
               className="absolute left-0 -top-[86px] w-px h-[173px]"
               style={{ background: `linear-gradient(to bottom, transparent, ${flareLine}, transparent)` }}
@@ -73,7 +76,12 @@ export const CoverSlide = ({ onNext }) => (
       aria-label="Scroll to the next slide"
       className="group absolute bottom-[34px] left-1/2 -translate-x-1/2 w-[46px] h-[46px] rounded-full border border-white/20 bg-white/[0.03] flex items-center justify-center cursor-pointer transition-colors duration-300 hover:border-white/50"
     >
-      <svg viewBox="854 937 19 23" className="w-[17px] h-[20px] transition-transform duration-300 group-hover:translate-y-0.5" aria-hidden="true">
+      <svg
+        viewBox="854 937 19 23"
+        ref={ambient}
+        className="uni-amb uni-amb-nudge w-[17px] h-[20px] transition-transform duration-300 group-hover:translate-y-0.5"
+        aria-hidden="true"
+      >
         <path d={arrowDown} fill="#E8E8E1" fillOpacity="0.8" />
       </svg>
     </button>
@@ -82,68 +90,34 @@ export const CoverSlide = ({ onNext }) => (
 
 /* -------------------------------- 02 Manifesto -------------------------------- */
 
-export const ManifestoSlide = () => {
-  const sectionRef = useRef(null);
+export const ManifestoSlide = () => (
+  <section id="manifesto" className="relative w-full h-[97.2cqw] min-h-[420px] overflow-hidden">
+    {/* The rings as one static SVG image turning slowly on its centre, like the home hero
+        graphic: the browser draws it once and the GPU rotates it, so it never costs a
+        repaint (moving 19 separate paths every frame is what made this slide lag). */}
+    <Image
+      src="/universe/manifesto-rings.svg"
+      alt=""
+      aria-hidden="true"
+      width={1210}
+      height={1121}
+      ref={ambient}
+      // 90% of the design size, on the same centre: the rings are wider (1210) than the
+      // section is tall (1121), so at full size they'd clip top and bottom as they turn
+      className="uni-amb uni-amb-spin pointer-events-none absolute top-[4.86cqw] left-[3.17cqw] w-[94.41cqw] h-[87.48cqw] max-w-none"
+      style={{ "--amb-dur": "60s" }}
+    />
 
-  useEffect(() => {
-    // Inner rings twist further than outer ones as the slide scrolls past.
-    // CSS (fill-box) rotation keeps each ring turning around its own centre.
-    const st = ScrollTrigger.create({
-      trigger: sectionRef.current,
-      start: "top bottom",
-      end: "bottom top",
-      scrub: true,
-      onUpdate: (self) => {
-        sectionRef.current?.style.setProperty("--twist", `${(self.progress - 0.5) * 2.8}deg`);
-      },
-    });
-    return () => st.kill();
-  }, []);
-
-  return (
-    <section id="manifesto" ref={sectionRef} className="relative w-full h-[97.2cqw] min-h-[420px] overflow-hidden">
-      <svg
-        viewBox="263 1005 1210 1121"
-        className="absolute top-0 left-[-2.08cqw] w-[104.9cqw] h-[97.2cqw] overflow-visible"
-        fill="none"
-        aria-hidden="true"
-      >
-        <defs>
-          <linearGradient id="ringShade" x1="263" y1="1005" x2="1473" y2="2126" gradientUnits="userSpaceOnUse">
-            <stop offset="0" stopColor="#E8E8E1" stopOpacity="0.55" />
-            <stop offset="0.45" stopColor="#E8E8E1" stopOpacity="1" />
-            <stop offset="0.75" stopColor="#E8E8E1" stopOpacity="0.45" />
-            <stop offset="1" stopColor="#E8E8E1" stopOpacity="0.8" />
-          </linearGradient>
-        </defs>
-        {rings.map((d, i) => (
-          <path
-            key={i}
-            d={d}
-            style={{
-              transformBox: "fill-box",
-              transformOrigin: "center",
-              transform: `rotate(calc(var(--twist, 0deg) * ${i}))`,
-            }}
-            stroke="url(#ringShade)"
-            strokeOpacity={0.14 + (i / (rings.length - 1)) * 0.42}
-            strokeWidth="1"
-            vectorEffect="non-scaling-stroke"
-          />
-        ))}
-      </svg>
-
-      <motion.div className="absolute left-[38.1cqw] top-1/2 -translate-y-1/2" {...fadeUp}>
-        <h2 className="font-heading font-light text-[#E8E8E1] leading-[1.15] text-[clamp(26px,3.82cqw,66px)]">
-          Who are you?
-        </h2>
-        <p className="font-heading font-light uppercase text-[#8E8E8E] text-[clamp(12px,1.47cqw,24px)] mt-[clamp(8px,1.2cqw,20px)]">
-          Authenticity.
-        </p>
-      </motion.div>
-    </section>
-  );
-};
+    <motion.div className="absolute left-[38.1cqw] top-1/2 -translate-y-1/2" {...fadeUp}>
+      <h2 className="font-heading font-light text-[#E8E8E1] leading-[1.15] text-[clamp(26px,3.82cqw,66px)]">
+        Who are you?
+      </h2>
+      <p className="font-heading font-light uppercase text-[#8E8E8E] text-[clamp(12px,1.47cqw,24px)] mt-[clamp(8px,1.2cqw,20px)]">
+        Authenticity.
+      </p>
+    </motion.div>
+  </section>
+);
 
 /* ------------------------------ 03 What Is A Brand ----------------------------- */
 
@@ -181,7 +155,9 @@ export const WhatIsABrandSlide = () => (
     <div className="relative hidden md:block h-[93.2cqw]">
       <motion.svg
         viewBox="287 2125 1153 1075"
-        className="absolute inset-0 w-full h-full"
+        ref={ambient}
+        className="uni-amb uni-amb-breathe absolute inset-0 w-full h-full"
+        style={{ "--amb-dur": "7s", "--amb-min": 0.55 }}
         fill="none"
         aria-hidden="true"
         initial="hidden"

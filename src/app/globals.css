@@ -443,3 +443,149 @@ section:has(#brand-partners-form) form input:-webkit-autofill:active {
   background-color: #000 !important;
   transition: background-color 9999s ease-out 0s;
 }
+/*
+  Universe: full-width slide backgrounds. A slide's own bottom fade comes in through
+  --uni-fade-y. On wide screens the content column stops at 1640px (UniverseShell) and page
+  colour shows either side of it, so the image sides fade out too instead of ending in a hard edge.
+*/
+.uni-bg {
+  -webkit-mask-image: var(--uni-fade-y, none);
+  mask-image: var(--uni-fade-y, none);
+}
+
+@container (min-width: 1640px) {
+  .uni-bg {
+    -webkit-mask-image: var(--uni-fade-y, linear-gradient(#000, #000)),
+      linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+    -webkit-mask-composite: source-in;
+    mask-image: var(--uni-fade-y, linear-gradient(#000, #000)),
+      linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+    mask-composite: intersect;
+  }
+}
+
+/*
+  Universe ambient motion: slow loops on decorative art (glows, rings) so a section never
+  sits completely still. Text, swatches, diagrams and gallery images stay put.
+  - Each element carries .uni-amb plus one kind; timing is tuned per element with
+    --amb-dur (and --amb-delay so neighbours drift out of step).
+  - It only runs while on screen: the `ambient` ref (helper/universeAmbient.js) sets
+    data-on, so off-screen loops cost nothing.
+  - Kinds use the individual `scale` / `translate` / `rotate` properties or `transform`
+    on elements nothing else transforms, so they never fight framer-motion's entrances.
+*/
+/* Glows: light slowly swelling and settling */
+.uni-amb-breathe {
+  animation: uniBreathe var(--amb-dur, 9s) ease-in-out var(--amb-delay, 0s) infinite alternate;
+}
+@keyframes uniBreathe {
+  to { opacity: var(--amb-min, 0.7); }
+}
+
+/* Rings: a very slow turn, so a ring's thick-to-thin taper travels round it */
+.uni-amb-spin {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: uniSpin var(--amb-dur, 120s) linear var(--amb-delay, 0s) infinite;
+}
+.uni-amb-spin-rev {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: uniSpin var(--amb-dur, 120s) linear var(--amb-delay, 0s) infinite reverse;
+}
+@keyframes uniSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* Vision fan: the ellipses spread a little wider, then close again */
+.uni-amb-fan {
+  transform-box: fill-box;
+  transform-origin: left center;
+  animation: uniFan var(--amb-dur, 8s) ease-in-out var(--amb-delay, 0s) infinite alternate;
+}
+@keyframes uniFan {
+  to { transform: scaleX(1.035); }
+}
+
+/* Contour rings: a slow swell outwards */
+.uni-amb-swell {
+  animation: uniSwell var(--amb-dur, 14s) ease-in-out var(--amb-delay, 0s) infinite alternate;
+}
+@keyframes uniSwell {
+  to { scale: var(--amb-scale, 1.03); }
+}
+
+/* Floating objects (the Background sphere) */
+.uni-amb-float {
+  animation: uniFloat var(--amb-dur, 10s) ease-in-out var(--amb-delay, 0s) infinite alternate;
+}
+@keyframes uniFloat {
+  to { translate: 0 var(--amb-dy, -14px); }
+}
+
+/* Cover arrow: a gentle nudge downwards, inviting the scroll */
+.uni-amb-nudge {
+  animation: uniNudge 2.6s ease-in-out infinite;
+}
+@keyframes uniNudge {
+  0%, 60%, 100% { transform: translateY(0); }
+  30% { transform: translateY(4px); }
+}
+
+.uni-amb:not([data-on]) {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .uni-amb {
+    animation: none !important;
+  }
+}
+
+/*
+  Universe pager pull (SlidePager.jsx): everything follows --p (0-1), which the pager
+  eases every frame from the visitor's scroll input at the end of a slide.
+*/
+.uni-pull {
+  --p: 0;
+  transform: translateY(calc(var(--p) * -8px));
+}
+/* Bar: dim tail, bright head, so it reads as moving towards Next */
+.uni-pull-bar {
+  position: absolute;
+  left: 0;
+  top: -1px;
+  width: 100%;
+  height: 2px;
+  pointer-events: none;
+  transform-origin: left;
+  transform: scaleX(var(--p));
+  background: linear-gradient(to right, rgba(232, 232, 225, 0.25), #e8e8e1);
+}
+/* Glowing tip riding the head of the bar */
+.uni-pull-tip {
+  position: absolute;
+  top: 0;
+  left: calc(var(--p) * 100%);
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  pointer-events: none;
+  background: #f4f4ee;
+  box-shadow: 0 0 10px 2px rgba(232, 232, 225, 0.55), 0 0 24px 6px rgba(232, 232, 225, 0.18);
+  translate: -50% -50%;
+  opacity: min(1, calc(var(--p) * 12));
+  transition: scale 0.28s ease-out, opacity 0.28s ease-out;
+}
+/* Attention shifts to where the pull is going */
+.uni-pull-prev {
+  opacity: calc(1 - var(--p) * 0.55);
+}
+.uni-pull-next svg {
+  transform: translateX(calc(var(--p) * 10px));
+}
+/* Completion: the tip blooms and fades as the page changes */
+.uni-pull.is-complete .uni-pull-tip {
+  scale: 3;
+  opacity: 0;
+}

@@ -8,6 +8,7 @@ export const universeIntro = [
 ];
 
 export const universeGroups = [
+  { title: "Introduction", items: universeIntro },
   {
     title: "Brand Strategy",
     items: [
@@ -27,10 +28,8 @@ export const universeGroups = [
   },
 ];
 
-export const universeSlides = [
-  ...universeIntro,
-  ...universeGroups.flatMap((g) => g.items),
-];
+// Every slide in order (the Introduction group holds slides 01-04)
+export const universeSlides = universeGroups.flatMap((g) => g.items);
 
 /*
   Routing: slides 01-04 share /universe (sections on one scrolling page); every slide from
@@ -42,7 +41,7 @@ const introIds = new Set(universeIntro.map((s) => s.id));
 export const isIntroSlide = (id) => introIds.has(id);
 
 // Slides that get their own page, in order
-export const slidePages = universeGroups.flatMap((g) => g.items);
+export const slidePages = universeSlides.filter((s) => !introIds.has(s.id));
 
 export const findSlide = (id) => universeSlides.find((s) => s.id === id);
 

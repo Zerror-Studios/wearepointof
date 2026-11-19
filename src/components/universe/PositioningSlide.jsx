@@ -3,6 +3,7 @@ import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { fadeUp, heading, body, subheading, SectionIndex, MotionImage, COLUMN_SIZES, TaperRing } from "./shared";
+import { ambient } from "@/helper/universeAmbient";
 
 /*
   06 Positioning & Audience + 07 Personality & Voice. The design runs them as one
@@ -93,13 +94,14 @@ const VoiceCircle = ({ c, i }) => (
   >
     <motion.svg
       viewBox="0 0 100 100"
-      className="absolute inset-0 w-full h-full overflow-visible"
+      ref={ambient}
+      className={`uni-amb ${i % 2 ? "uni-amb-spin-rev" : "uni-amb-spin"} absolute inset-0 w-full h-full overflow-visible`}
       fill="none"
       aria-hidden="true"
       initial="hidden"
       whileInView="shown"
       viewport={{ once: true, amount: 0.5 }}
-      style={{ opacity: c.o }}
+      style={{ opacity: c.o, "--amb-dur": `${70 + i * 12}s` }}
     >
       {/* Thick → thin gradient line; 1 unit ≈ 2.2px at desktop size */}
       <TaperRing cx={50} cy={50} r={49.6} thick={1.1} thin={0.16} delay={i * 0.15} />
@@ -166,7 +168,8 @@ export const PositioningSlide = ({ onNavigate }) => (
         width={1153}
         height={1267}
         sizes={COLUMN_SIZES}
-        className="absolute inset-0 w-full h-full object-cover object-left"
+        ref={ambient}
+        className="uni-bg uni-amb uni-amb-swell origin-left absolute inset-0 w-full h-full object-cover object-left"
         initial={{ opacity: 0, scale: 0.97 }}
         whileInView={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1.6, ease: "easeOut" }}

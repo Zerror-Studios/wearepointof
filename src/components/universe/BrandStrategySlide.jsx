@@ -4,6 +4,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { arrowDown } from "@/helper/universeArt";
 import { MotionImage, COLUMN_SIZES, TaperRing } from "./shared";
+import { ambient } from "@/helper/universeAmbient";
 
 /*
   05 Brand Strategy → Universe & Core.
@@ -28,7 +29,7 @@ const body = "font-body text-[#BEBEB8] leading-[1.7] text-[15px] md:leading-[1.6
 
 const strategyCards = [
   { n: "05", title: ["Universe &", "Core"], count: 6, image: "/universe/strategy-card1.webp", target: "universe-core-index" },
-  { n: "06", title: ["Positioning,", "Audience & Voice"], count: 3, image: "/universe/strategy-card2.webp", target: "positioning-and-audience" },
+  { n: "06", title: ["Positioning,", "Audience & Voice"], count: 3, image: "/universe/strategy-card2-v2.webp", target: "positioning-and-audience" },
 ];
 
 const coreIndex = [
@@ -103,22 +104,25 @@ const VisionRings = () => (
         <stop offset="1" stopColor="#E8E8E1" stopOpacity="0.08" />
       </linearGradient>
     </defs>
-    {Array.from({ length: VISION.count }, (_, i) => (
-      <motion.ellipse
-        key={i}
-        cx={VISION.cx + i * VISION.step}
-        cy={VISION.cy}
-        rx={VISION.rx}
-        ry={VISION.ry}
-        stroke="url(#visionShade)"
-        strokeWidth="0.8"
-        vectorEffect="non-scaling-stroke"
-        variants={{
-          hidden: { x: -i * VISION.step, opacity: i === 0 ? 1 : 0 },
-          shown: { x: 0, opacity: 1, transition: { duration: 1.6, ease: [0.22, 1, 0.36, 1], delay: 0.2 } },
-        }}
-      />
-    ))}
+    {/* The fan spreads a little wider and closes again */}
+    <g ref={ambient} className="uni-amb uni-amb-fan">
+      {Array.from({ length: VISION.count }, (_, i) => (
+        <motion.ellipse
+          key={i}
+          cx={VISION.cx + i * VISION.step}
+          cy={VISION.cy}
+          rx={VISION.rx}
+          ry={VISION.ry}
+          stroke="url(#visionShade)"
+          strokeWidth="0.8"
+          vectorEffect="non-scaling-stroke"
+          variants={{
+            hidden: { x: -i * VISION.step, opacity: i === 0 ? 1 : 0 },
+            shown: { x: 0, opacity: 1, transition: { duration: 1.6, ease: [0.22, 1, 0.36, 1], delay: 0.2 } },
+          }}
+        />
+      ))}
+    </g>
   </motion.svg>
 );
 
@@ -141,8 +145,16 @@ const MissionRings = () => (
     viewport={{ once: true, amount: 0.4 }}
   >
     {/* Line tapers thick → thin with a fading gradient (1 viewBox unit ≈ 1px at 1440) */}
+    {/* Each ring turns slowly on its own centre (alternating direction), carrying its taper round */}
     {MISSION.map((c, i) => (
-      <TaperRing key={c.cx} cx={c.cx} cy={3365.15} r={c.r} thick={2.4} thin={0.35} opacity={c.o} duration={1.8} delay={i * 0.18} />
+      <g
+        key={c.cx}
+        ref={ambient}
+        className={`uni-amb ${i % 2 ? "uni-amb-spin-rev" : "uni-amb-spin"}`}
+        style={{ "--amb-dur": `${90 + i * 18}s` }}
+      >
+        <TaperRing cx={c.cx} cy={3365.15} r={c.r} thick={2.4} thin={0.35} opacity={c.o} duration={1.8} delay={i * 0.18} />
+      </g>
     ))}
   </motion.svg>
 );
@@ -248,8 +260,9 @@ const BrandStrategySlide = ({ onNavigate }) => (
       width={1153}
       height={1900}
       sizes={COLUMN_SIZES}
-      className="pointer-events-none absolute left-0 top-0 w-full h-[1000px] md:h-[164.8cqw] object-cover object-top"
-      style={{ maskImage: "linear-gradient(to bottom, #000 85%, transparent)", WebkitMaskImage: "linear-gradient(to bottom, #000 85%, transparent)" }}
+      ref={ambient}
+      className="uni-bg uni-amb uni-amb-breathe pointer-events-none absolute left-0 top-0 w-full h-[1000px] md:h-[164.8cqw] object-cover object-top"
+      style={{ "--uni-fade-y": "linear-gradient(to bottom, #000 85%, transparent)", "--amb-dur": "10s" }}
     />
 
     {/* Brand Strategy */}
@@ -383,7 +396,8 @@ const BrandStrategySlide = ({ onNavigate }) => (
         width={1186}
         height={1186}
         sizes="(min-width: 768px) 52vw, 78vw"
-        className="pointer-events-none absolute -left-[22vw] -top-[18vw] w-[78vw] md:-left-[5.46cqw] md:top-0 md:w-[51.43cqw] max-w-none"
+        ref={ambient}
+        className="uni-amb uni-amb-float pointer-events-none absolute -left-[22vw] -top-[18vw] w-[78vw] md:-left-[5.46cqw] md:top-0 md:w-[51.43cqw] max-w-none"
         initial={{ opacity: 0, scale: 0.94 }}
         whileInView={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1.4, ease: "easeOut" }}

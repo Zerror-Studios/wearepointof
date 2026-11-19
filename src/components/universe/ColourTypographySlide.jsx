@@ -3,6 +3,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { fadeUp, heading, SectionIndex, COLUMN_SIZES } from "./shared";
+import { ambient } from "@/helper/universeAmbient";
 
 /*
   09 Colour & Typography. Swatches and type specimens are live HTML (the brand fonts
@@ -241,8 +242,9 @@ const ColourTypographySlide = ({ onNavigate }) => (
       width={1153}
       height={1100}
       sizes={COLUMN_SIZES}
-      className="pointer-events-none absolute left-0 top-0 w-full h-[700px] md:h-[95.4cqw] object-cover object-top"
-      style={{ maskImage: "linear-gradient(to bottom, #000 80%, transparent)", WebkitMaskImage: "linear-gradient(to bottom, #000 80%, transparent)" }}
+      ref={ambient}
+      className="uni-bg uni-amb uni-amb-breathe pointer-events-none absolute left-0 top-0 w-full h-[700px] md:h-[95.4cqw] object-cover object-top"
+      style={{ "--uni-fade-y": "linear-gradient(to bottom, #000 80%, transparent)", "--amb-dur": "9s", "--amb-min": 0.6 }}
     />
 
     <div className="relative">

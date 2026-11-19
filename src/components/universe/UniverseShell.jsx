@@ -5,20 +5,19 @@ import { AnimatePresence, motion } from "framer-motion";
 import UniverseSidebar from "./UniverseSidebar";
 import {
   universeIntro,
-  universeSlides,
   findSlide,
   slidePath,
   slideHref,
   UNIVERSE_BASE,
 } from "@/helper/universeData";
 import { scrollToId } from "@/helper/universeScroll";
+import { getExitPath } from "@/helper/universeExit";
 
-const TOTAL = universeSlides.length;
 const introIds = universeIntro.map((s) => s.id);
 
 /*
   Shared frame for /universe and /universe/<slide>: sidebar (or drawer), main column and
-  slide counter. Rendered from app/universe/layout.js, so it stays mounted between pages.
+  Close button. Rendered from app/universe/layout.js, so it stays mounted between pages.
 */
 
 const UniverseNavContext = createContext(() => {});
@@ -74,8 +73,6 @@ const UniverseShell = ({ children }) => {
     [pathname, pageSlide, router]
   );
 
-  const index = universeSlides.findIndex((s) => s.id === activeId) + 1;
-
   return (
     <UniverseNavContext.Provider value={navigate}>
       <div className="font-(family-name:--font-uni-mono)">
@@ -83,6 +80,20 @@ const UniverseShell = ({ children }) => {
         <aside className="hidden lg:block fixed top-0 left-0 z-30 w-[287px] h-svh bg-[#080808]">
           <UniverseSidebar activeId={activeId} onNavigate={navigate} />
         </aside>
+
+        {/* Close: Universe has no site navbar, this is the way back out */}
+        <button
+          type="button"
+          onClick={() => router.push(getExitPath())}
+          aria-label="Close Universe"
+          title="Close Universe"
+          className="fixed top-5 right-5 lg:top-[30px] lg:right-10 z-40 flex items-center gap-2 rounded-full border border-white/15 bg-[#080808]/90 backdrop-blur px-4 py-2.5 text-[13px] text-[#E8E8E1] cursor-pointer transition-colors duration-300 hover:bg-[#2a2a2a]"
+        >
+          Close
+          <svg viewBox="0 0 10 10" className="w-2.5 h-2.5" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden="true">
+            <path d="M1 1l8 8M9 1L1 9" />
+          </svg>
+        </button>
 
         {/* Mobile / tablet: sidebar as a drawer */}
         <button
@@ -119,15 +130,12 @@ const UniverseShell = ({ children }) => {
           )}
         </AnimatePresence>
 
-        <main className="@container relative lg:ml-[287px] min-h-svh bg-[#141414] overflow-x-clip">{children}</main>
-
-        {/* Slide counter */}
-        <p
-          aria-live="polite"
-          className="hidden lg:block fixed z-30 right-[100px] bottom-[52px] text-[15px] tracking-[0.5px] text-[#E8E8E1] tabular-nums pointer-events-none"
-        >
-          {String(index).padStart(2, "0")} / {String(TOTAL).padStart(2, "0")}
-        </p>
+        {/* Slides size themselves off this column (cqw). Past 1640px their text has hit its max
+            size while images and spacing would keep growing, so the column stops there and
+            centres; backgrounds marked .uni-bg fade out at its sides. */}
+        <main className="relative lg:ml-[287px] min-h-svh bg-[#141414] overflow-x-clip">
+          <div className="@container relative mx-auto w-full max-w-[1640px] overflow-x-clip">{children}</div>
+        </main>
       </div>
     </UniverseNavContext.Provider>
   );

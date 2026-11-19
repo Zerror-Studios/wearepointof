@@ -3,6 +3,7 @@ import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { fadeUp, heading, body, ArrowRight, SectionIndex, MotionImage, COLUMN_SIZES } from "./shared";
+import { ambient } from "@/helper/universeAmbient";
 
 /*
   Brand Identity intro + 08 Identity Design. The logo diagrams are exported from the
@@ -183,8 +184,9 @@ const IdentityDesignSlide = ({ onNavigate }) => (
       width={1153}
       height={1197}
       sizes={COLUMN_SIZES}
-      className="pointer-events-none absolute left-0 top-0 w-full h-[900px] md:h-[103.8cqw] object-cover object-top"
-      style={{ maskImage: "linear-gradient(to bottom, #000 85%, transparent)", WebkitMaskImage: "linear-gradient(to bottom, #000 85%, transparent)" }}
+      ref={ambient}
+      className="uni-bg uni-amb uni-amb-breathe pointer-events-none absolute left-0 top-0 w-full h-[900px] md:h-[103.8cqw] object-cover object-top"
+      style={{ "--uni-fade-y": "linear-gradient(to bottom, #000 85%, transparent)", "--amb-dur": "10s" }}
     />
 
     {/* Brand Identity */}
@@ -228,7 +230,9 @@ const IdentityDesignSlide = ({ onNavigate }) => (
         width={1153}
         height={941}
         sizes={COLUMN_SIZES}
-        className="pointer-events-none absolute -left-6 -right-6 md:left-0 md:right-0 -top-[59.3cqw] w-[calc(100%+48px)] md:w-full max-w-none h-[81.6cqw] object-cover"
+        ref={ambient}
+        style={{ "--amb-dur": "8s", "--amb-min": 0.6 }}
+        className="uni-bg uni-amb uni-amb-breathe pointer-events-none absolute -left-6 -right-6 md:left-0 md:right-0 -top-[59.3cqw] w-[calc(100%+48px)] md:w-full max-w-none h-[81.6cqw] object-cover"
       />
       <motion.h3 className={`${heading} relative md:ml-[8.67cqw]`} {...fadeUp}>
         Concept
