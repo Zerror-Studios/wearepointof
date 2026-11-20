@@ -15,10 +15,12 @@ const A = "/universe/identity";
 /* ------------------------------------ Data ------------------------------------ */
 
 const identityCards = [
-  { n: "08", title: ["Identity", "Design"], count: 6, image: `${A}/identity-card-8.webp`, target: "identity-design-index" },
-  { n: "09", title: ["Colour", "& Typography"], count: 7, image: `${A}/identity-card-9.webp`, target: "colour-and-typography" },
-  { n: "10", title: ["Visual", "Language"], count: 5, image: `${A}/identity-card-10.webp`, target: "visual-language" },
-  { n: "11", title: ["Deliverables"], count: 5, image: `${A}/identity-card-11.webp`, target: "deliverables" },
+  { n: "08", title: ["Identity", "Design"], count: 6, image: `${A}/identity-tile-8.webp`, target: "identity-design-index" },
+  { n: "09", title: ["Colour", "& Typography"], count: 7, image: `${A}/identity-tile-9.webp`, target: "colour-and-typography" },
+  // The Visual Language artwork is exported with near-white line highlights (the others top out
+  // at ~28% grey), so it's toned down to sit at the same level as the rest of the row
+  { n: "10", title: ["Visual", "Language"], count: 5, image: `${A}/identity-tile-10.webp`, target: "visual-language", tone: 0.55 },
+  { n: "11", title: ["Deliverables"], count: 5, image: `${A}/identity-tile-11.webp`, target: "deliverables" },
 ];
 
 const index = [
@@ -55,7 +57,7 @@ const IdentityCard = ({ card, i, onNavigate }) => (
   <motion.button
     type="button"
     onClick={() => onNavigate(card.target)}
-    className="group relative block w-full aspect-[229/289] overflow-hidden text-left cursor-pointer"
+    className="group relative block w-full aspect-[229/289] overflow-hidden text-left cursor-pointer outline-none"
     initial={{ opacity: 0, y: 24 }}
     whileInView={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.8, ease: "easeOut", delay: i * 0.08 }}
@@ -64,10 +66,11 @@ const IdentityCard = ({ card, i, onNavigate }) => (
     <Image
       src={card.image}
       alt=""
-      width={460}
-      height={580}
+      width={454}
+      height={574}
       sizes="(min-width: 640px) 20vw, 50vw"
-      className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.04]"
+      style={{ "--tone": card.tone ?? 1 }}
+      className="absolute inset-0 w-full h-full object-cover brightness-[calc(var(--tone)*0.85)] transition-[transform,filter] duration-[1200ms] ease-out group-hover:scale-[1.04] group-hover:brightness-[calc(var(--tone)*1.6)] group-focus-visible:brightness-[calc(var(--tone)*1.6)]"
     />
     <span className="relative flex h-full flex-col justify-end px-3 pb-2.5 md:px-[1.17cqw] md:pb-[0.9cqw]">
       <span className="font-heading font-light text-[#C1BFBF] leading-[1.25] text-[17px] md:text-[clamp(13px,1.91cqw,32px)]">
